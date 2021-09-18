@@ -1,0 +1,98 @@
+body {
+    background-color: #303030;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+header {
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+header img {
+    display: flex;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    margin: 0 40px 20px 20px;
+}
+
+header #flag {
+    margin-left: 1em;
+}
+
+header #flag img {
+    -o-object-fit: contain;
+    object-fit: contain;
+    width: 2.750em;
+    height: 2.750em;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+g {
+    stroke: gray;
+}
+
+g>g:hover:not([disabled="true"]) {
+    fill: #e77c48;
+    cursor: pointer;
+}
+
+g[selected="true"] {
+    fill: #e77c48;
+}
+
+g[disabled="true"] {
+    filter: grayscale(100%);
+}
+
+text {
+    font-size: 30px;
+    fill: #303030;
+    stroke: none;
+}
+
+.pin {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+}
+
+.pinIcon {
+    width: 30px;
+    height: 30px;
+    margin: -50%;
+    background-image: url(../../assets/mapIcons/MapIconStorageFacility.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    position: absolute;
+}
+
+.pinIcon.wardens {
+    background-image: url(../../assets/mapIcons/MapIconStorageFacilityWarden.png);
+}
+
+.pinIcon.colonials {
+    background-image: url(../../assets/mapIcons/MapIconStorageFacilityColonial.png);
+}
+
+.pinIcon.seaport {
+    background-image: url(../../assets/mapIcons/MapIconSeaport.png);
+}
+
+.pinIcon.seaport.wardens {
+    background-image: url(../../assets/mapIcons/MapIconSeaportWarden.png);
+}
+
+.pinIcon.seaport.colonials {
+    background-image: url(../../assets/mapIcons/MapIconSeaportColonial.png);
+}
+
+.form-check-input:checked {
+    background-color: #e77c48;
+    border-color: #e77c48;
+}

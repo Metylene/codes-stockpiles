@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Gestion codes-réserves</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="src/css/bootstrap.css">
+    <link rel="stylesheet" href="src/css/darkly-bootstrap.min.css">
+    <link rel="stylesheet" href="src/css/style.css">
+</head>
+
+<body>
+    <noscript>
+        <strong>Désolé mais cette page a besoin de Javascript pour fonctionner. Veuillez l'installer /
+            l'autoriser.</strong>
+        <br>
+        <strong>Sorry but this page need Javascript to work properly. Please install or autorize it.</strong>
+    </noscript>
+    <header>
+        <img src="./assets/logo_clan.png" alt="Clan logo">
+        <h1>11e RC-FL stockpile management</h1>
+        <div id="flag">
+            <img src="./assets/flag_fr.svg" alt="choix langue française" onclick="localize('fr')">
+            <img src="./assets/flag_en.svg" alt="english language choice" onclick="localize('en')">
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <h2>Add a stockpile</h2>
+            <p>Fill the form with the location and infos about the new stockpile. Then copy/paste the generated
+                discord message in #codes-reserves channel.<br>
+                You can click on the hexes to select the region and city.</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <svg viewBox="-550 -610 1100 1220">
+                    <defs>
+                        <pattern id="imageMapNevishLineHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapNevishLineHex.png" />
+                        </pattern>
+                        <pattern id="imageMapOarbreakerHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapOarbreakerHex.png" />
+                        </pattern>
+                        <pattern id="imageMapFishermansRowHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapFishermansRowHex.png" />
+                        </pattern>
+                        <pattern id="imageMapOriginHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapOriginHex.png" />
+                        </pattern>
+                        <pattern id="imageMapCallumsCapeHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapCallumsCapeHex.png" />
+                        </pattern>
+                        <pattern id="imageMapStonecradleHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapStonecradleHex.png" />
+                        </pattern>
+                        <pattern id="imageMapFarranacCoastHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapFarranacCoastHex.png" />
+                        </pattern>
+                        <pattern id="imageMapWestgateHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapWestgateHex.png" />
+                        </pattern>
+                        <pattern id="imageMapAshFieldsHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapAshFieldsHex.png" />
+                        </pattern>
+                        <pattern id="imageMapSpeakingWoodsHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapSpeakingWoodsHex.png" />
+                        </pattern>
+                        <pattern id="imageMapMooringCountyHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapMooringCountyHex.png" />
+                        </pattern>
+                        <pattern id="imageMapLinnMercyHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapLinnMercyHex.png" />
+                        </pattern>
+                        <pattern id="imageMapLochMorHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapLochMorHex.png" />
+                        </pattern>
+                        <pattern id="imageMapHeartlandsHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapHeartlandsHex.png" />
+                        </pattern>
+                        <pattern id="imageMapRedRiverHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapRedRiverHex.png" />
+                        </pattern>
+                        <pattern id="imageMapBasinSionnachHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapBasinSionnachHex.png" />
+                        </pattern>
+                        <pattern id="imageMapReachingTrailHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapReachingTrailHex.png" />
+                        </pattern>
+                        <pattern id="imageMapCallahansPassageHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapCallahansPassageHex.png" />
+                        </pattern>
+                        <pattern id="imageMapDeadLandsHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapDeadLandsHex.png" />
+                        </pattern>
+                        <pattern id="imageMapUmbralWildwoodHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapUmbralWildwoodHex.png" />
+                        </pattern>
+                        <pattern id="imageMapGreatMarchHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapGreatMarchHex.png" />
+                        </pattern>
+                        <pattern id="imageMapKalokaiHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapKalokaiHex.png" />
+                        </pattern>
+                        <pattern id="imageMapHowlCountyHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapHowlCountyHex.png" />
+                        </pattern>
+                        <pattern id="imageMapViperPitHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapViperPitHex.png" />
+                        </pattern>
+                        <pattern id="imageMapMarbanHollow" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapMarbanHollow.png" />
+                        </pattern>
+                        <pattern id="imageMapDrownedValeHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapDrownedValeHex.png" />
+                        </pattern>
+                        <pattern id="imageMapShackledChasmHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapShackledChasmHex.png" />
+                        </pattern>
+                        <pattern id="imageMapAcrithiaHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapAcrithiaHex.png" />
+                        </pattern>
+                        <pattern id="imageMapClansheadValleyHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapClansheadValleyHex.png" />
+                        </pattern>
+                        <pattern id="imageMapWeatheredExpanseHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapWeatheredExpanseHex.png" />
+                        </pattern>
+                        <pattern id="imageMapEndlessShoreHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapEndlessShoreHex.png" />
+                        </pattern>
+                        <pattern id="imageMapAllodsBightHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapAllodsBightHex.png" />
+                        </pattern>
+                        <pattern id="imageMapTerminusHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapTerminusHex.png" />
+                        </pattern>
+                        <pattern id="imageMapMorgensCrossingHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapMorgensCrossingHex.png" />
+                        </pattern>
+                        <pattern id="imageMapGodcroftsHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapGodcroftsHex.png" />
+                        </pattern>
+                        <pattern id="imageMapTempestIslandHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapTempestIslandHex.png" />
+                        </pattern>
+                        <pattern id="imageMapTheFingersHex" height="100%" width="100%" viewBox="0 0 2844 2467">
+                            <image width="2844" height="2467" xlink:href="./assets/maps/MapTheFingersHex.png" />
+                        </pattern>
+                    </defs>
+                    <g fill="#303030">
+                        <g transform="translate(-450,-260)" onclick="selectHexShape('NevishLineHex')"
+                            id="NevishLineHex-shape" fill="url(#imageMapNevishLineHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Nevish Line</text>
+                            <title>Nevish Line</title>
+                        </g>
+                        <g transform="translate(-450,-87)" onclick="selectHexShape('OarbreakerHex')"
+                            id="OarbreakerHex-shape" fill="url(#imageMapOarbreakerHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Oarbreaker</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Isles</text>
+                            <title>The Oarbreaker Isles</title>
+                        </g>
+                        <g transform="translate(-450,87)" onclick="selectHexShape('FishermansRowHex')"
+                            id="FishermansRowHex-shape" fill="url(#imageMapFishermansRowHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Fisherman's</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Row</text>
+                            <title>Fisherman's Row</title>
+                        </g>
+                        <g transform="translate(-450,260)" onclick="selectHexShape('OriginHex')" id="OriginHex-shape"
+                            fill="url(#imageMapOriginHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Origin</text>
+                            <title>Origin</title>
+                        </g>
+                        <g transform="translate(-300,-346)" onclick="selectHexShape('CallumsCapeHex')"
+                            id="CallumsCapeHex-shape" fill="url(#imageMapCallumsCapeHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Callum's</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Cape</text>
+                            <title>Callum's Cape</title>
+                        </g>
+                        <g transform="translate(-300,-173)" onclick="selectHexShape('StonecradleHex')"
+                            id="StonecradleHex-shape" fill="url(#imageMapStonecradleHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Stonecradle</text>
+                            <title>Stonecradle</title>
+                        </g>
+                        <g transform="translate(-300,0)" onclick="selectHexShape('FarranacCoastHex')"
+                            id="FarranacCoastHex-shape" fill="url(#imageMapFarranacCoastHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Farranac</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Coast</text>
+                            <title>Farranac Coast</title>
+                        </g>
+                        <g transform="translate(-300,173)" onclick="selectHexShape('WestgateHex')"
+                            id="WestgateHex-shape" fill="url(#imageMapWestgateHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Westgate</text>
+                            <title>Westgate</title>
+                        </g>
+                        <g transform="translate(-300,346)" onclick="selectHexShape('AshFieldsHex')"
+                            id="AshFieldsHex-shape" fill="url(#imageMapAshFieldsHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Ash Fields</text>
+                            <title>Ash Fields</title>
+                        </g>
+                        <g transform="translate(-150,-433)" onclick="selectHexShape('SpeakingWoodsHex')"
+                            id="SpeakingWoodsHex-shape" fill="url(#imageMapSpeakingWoodsHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Speaking</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Woods</text>
+                            <title>Speaking Woods</title>
+                        </g>
+                        <g transform="translate(-150,-260)" onclick="selectHexShape('MooringCountyHex')"
+                            id="MooringCountyHex-shape" fill="url(#imageMapMooringCountyHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">The Moors</text>
+                            <title>The Moors</title>
+                        </g>
+                        <g transform="translate(-150,-87)" onclick="selectHexShape('LinnMercyHex')"
+                            id="LinnMercyHex-shape" fill="url(#imageMapLinnMercyHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">The Linn</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">of Mercy</text>
+                            <title>The Linn of Mercy</title>
+                        </g>
+                        <g transform="translate(-150,87)" onclick="selectHexShape('LochMorHex')" id="LochMorHex-shape"
+                            fill="url(#imageMapLochMorHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Loch Mor</text>
+                            <title>Loch Mor</title>
+                        </g>
+                        <g transform="translate(-150,260)" onclick="selectHexShape('HeartlandsHex')"
+                            id="HeartlandsHex-shape" fill="url(#imageMapHeartlandsHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Heartlands</text>
+                            <title>The Heartlands</title>
+                        </g>
+                        <g transform="translate(-150,433)" onclick="selectHexShape('RedRiverHex')"
+                            id="RedRiverHex-shape" fill="url(#imageMapRedRiverHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Red River</text>
+                            <title>Red River</title>
+                        </g>
+                        <g transform="translate(0,-520)" onclick="selectHexShape('BasinSionnachHex')"
+                            id="BasinSionnachHex-shape" fill="url(#imageMapBasinSionnachHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Basin</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Sionnach</text>
+                            <title>Basin Sionnach</title>
+                        </g>
+                        <g transform="translate(0,-346)" onclick="selectHexShape('ReachingTrailHex')"
+                            id="ReachingTrailHex-shape" fill="url(#imageMapReachingTrailHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Reaching</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Trail</text>
+                            <title>Reaching Trail</title>
+                        </g>
+                        <g transform="translate(0,-173)" onclick="selectHexShape('CallahansPassageHex')"
+                            id="CallahansPassageHex-shape" fill="url(#imageMapCallahansPassageHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Callahan's</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Passage</text>
+                            <title>Callahan's Passage</title>
+                        </g>
+                        <g transform="translate(0,0)" onclick="selectHexShape('DeadLandsHex')" id="DeadLandsHex-shape"
+                            fill="url(#imageMapDeadLandsHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Deadlands</text>
+                            <title>Deadlands</title>
+                        </g>
+                        <g transform="translate(0,173)" onclick="selectHexShape('UmbralWildwoodHex')"
+                            id="UmbralWildwoodHex-shape" fill="url(#imageMapUmbralWildwoodHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Umbral</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Wildwood</text>
+                            <title>Umbral Wildwood</title>
+                        </g>
+                        <g transform="translate(0,346)" onclick="selectHexShape('GreatMarchHex')"
+                            id="GreatMarchHex-shape" fill="url(#imageMapGreatMarchHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Great March</text>
+                            <title>Great March</title>
+                        </g>
+                        <g transform="translate(0,520)" onclick="selectHexShape('KalokaiHex')" id="KalokaiHex-shape"
+                            fill="url(#imageMapKalokaiHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Kalokai</text>
+                            <title>Kalokai</title>
+                        </g>
+                        <g transform="translate(150,-433)" onclick="selectHexShape('HowlCountyHex')"
+                            id="HowlCountyHex-shape" fill="url(#imageMapHowlCountyHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Howl County</text>
+                            <title>Howl County</title>
+                        </g>
+                        <g transform="translate(150,-260)" onclick="selectHexShape('ViperPitHex')"
+                            id="ViperPitHex-shape" fill="url(#imageMapViperPitHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Viper Pit</text>
+                            <title>Viper Pit</title>
+                        </g>
+                        <g transform="translate(150,-87)" onclick="selectHexShape('MarbanHollow')"
+                            id="MarbanHollow-shape" fill="url(#imageMapMarbanHollow)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Marban</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Hollow</text>
+                            <title>Marban Hollow</title>
+                        </g>
+                        <g transform="translate(150,87)" onclick="selectHexShape('DrownedValeHex')"
+                            id="DrownedValeHex-shape" fill="url(#imageMapDrownedValeHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Drowned</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Vale</text>
+                            <title>Drowned Vale</title>
+                        </g>
+                        <g transform="translate(150,260)" onclick="selectHexShape('ShackledChasmHex')"
+                            id="ShackledChasmHex-shape" fill="url(#imageMapShackledChasmHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Shackled</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Chasm</text>
+                            <title>Shackled Chasm</title>
+                        </g>
+                        <g transform="translate(150,433)" onclick="selectHexShape('AcrithiaHex')" id="AcrithiaHex-shape"
+                            fill="url(#imageMapAcrithiaHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Acrithia</text>
+                            <title>Acrithia</title>
+                        </g>
+                        <g transform="translate(300,-346)" onclick="selectHexShape('ClansheadValleyHex')"
+                            id="ClansheadValleyHex-shape" fill="url(#imageMapClansheadValleyHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Clanshead</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Valley</text>
+                            <title>Clanshead Valley</title>
+                        </g>
+                        <g transform="translate(300,-173)" onclick="selectHexShape('WeatheredExpanseHex')"
+                            id="WeatheredExpanseHex-shape" fill="url(#imageMapWeatheredExpanseHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Weathered</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Expanse</text>
+                            <title>Weathered Expanse</title>
+                        </g>
+                        <g transform="translate(300,0)" onclick="selectHexShape('EndlessShoreHex')"
+                            id="EndlessShoreHex-shape" fill="url(#imageMapEndlessShoreHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Endless</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Shore</text>
+                            <title>Endless Shore</title>
+                        </g>
+                        <g transform="translate(300,173)" onclick="selectHexShape('AllodsBightHex')"
+                            id="AllodsBightHex-shape" fill="url(#imageMapAllodsBightHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Allod's Bight</text>
+                            <title>Allod's Bight</title>
+                        </g>
+                        <g transform="translate(300,346)" onclick="selectHexShape('TerminusHex')" id="TerminusHex-shape"
+                            fill="url(#imageMapTerminusHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Terminus</text>
+                            <title>Terminus</title>
+                        </g>
+                        <g transform="translate(450,-260)" onclick="selectHexShape('MorgensCrossingHex')"
+                            id="MorgensCrossingHex-shape" fill="url(#imageMapMorgensCrossingHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Morgen's</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Crossing</text>
+                            <title>Morgen's Crossing</title>
+                        </g>
+                        <g transform="translate(450,-87)" onclick="selectHexShape('GodcroftsHex')"
+                            id="GodcroftsHex-shape" fill="url(#imageMapGodcroftsHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">Godcrofts</text>
+                            <title>Godcrofts</title>
+                        </g>
+                        <g transform="translate(450,87)" onclick="selectHexShape('TempestIslandHex')"
+                            id="TempestIslandHex-shape" fill="url(#imageMapTempestIslandHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="text-after-edge" text-anchor="middle">Tempest</text>
+                            <text dominant-baseline="text-before-edge" text-anchor="middle">Island</text>
+                            <title>Tempest Island</title>
+                        </g>
+                        <g transform="translate(450,260)" onclick="selectHexShape('TheFingersHex')"
+                            id="TheFingersHex-shape" fill="url(#imageMapTheFingersHex)">
+                            <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                            <text dominant-baseline="middle" text-anchor="middle">The Fingers</text>
+                            <title>The Fingers</title>
+                        </g>
+                </svg>
+            </div>
+            <div class="col-lg-6">
+                <form class="needs-validation" novalidate>
+                    <h4>Location :</h4>
+                    <!-- Region Select -->
+                    <div class="mb-3 row">
+                        <label for="regionSelect" class="col-sm-4 col-form-label">Region</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" name="region" id="regionSelect"
+                                aria-label="Floating label select" onchange=selectHexShape(this.value) required>
+                                <option selected disabled value="">Choose a region</option>
+                                <option value="AcrithiaHex">Acrithia</option>
+                                <option value="AllodsBightHex">Allod's Bight</option>
+                                <option value="AshFieldsHex">Ash Fields</option>
+                                <option value="BasinSionnachHex">Basin Sionnach</option>
+                                <option value="CallahansPassageHex">Callahan's Passage</option>
+                                <option value="CallumsCapeHex">Callum's Cape</option>
+                                <option value="ClansheadValleyHex">Clanshead Valley</option>
+                                <option value="DeadLandsHex">DeadLands</option>
+                                <option value="DrownedValeHex">Drowned Vale</option>
+                                <option value="EndlessShoreHex">Endless Shore</option>
+                                <option value="FarranacCoastHex">Farranac Coast</option>
+                                <option value="FishermansRowHex">Fisherman's Row</option>
+                                <option value="GodcroftsHex">Godcrofts</option>
+                                <option value="GreatMarchHex">GreatMarch</option>
+                                <option value="HeartlandsHex">Heartlands</option>
+                                <option value="HowlCountyHex">Howl County</option>
+                                <option value="KalokaiHex">Kalokai</option>
+                                <option value="LochMorHex">LochMor</option>
+                                <option value="MarbanHollow">Marban Hollow</option>
+                                <option value="MorgensCrossingHex">Morgen's Crossing</option>
+                                <option value="NevishLineHex">Nevish Line</option>
+                                <option value="OarbreakerHex">Oarbreaker Isles</option>
+                                <option value="OriginHex">Origin</option>
+                                <option value="ReachingTrailHex">Reaching Trail</option>
+                                <option value="RedRiverHex">Red River</option>
+                                <option value="ShackledChasmHex">Shackled Chasm</option>
+                                <option value="SpeakingWoodsHex">Speaking Woods</option>
+                                <option value="StonecradleHex">Stonecradle</option>
+                                <option value="TempestIslandHex">Tempest Island</option>
+                                <option value="TerminusHex">Terminus</option>
+                                <option value="TheFingersHex">The Fingers</option>
+                                <option value="LinnMercyHex">The Linn of Mercy</option>
+                                <option value="MooringCountyHex">The Moors</option>
+                                <option value="UmbralWildwoodHex">Umbral Wildwood</option>
+                                <option value="ViperPitHex">Viper Pit</option>
+                                <option value="WeatheredExpanseHex">Weathered Expanse</option>
+                                <option value="WestgateHex">Westgate</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a region.
+                            </div>
+                        </div>
+                    </div>
+                    <!-- City Select -->
+                    <div class="row">
+                        <!-- Cities radio group -->
+                        <div class="col-sm-6">
+                            <div for="regionSelect" class="col-form-label">City</div>
+                            <div id="citiesRadioGroup">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="city" id="inlineRadio1"
+                                        value="-1" disabled required>
+                                    <label class="form-check-label" for="inlineRadio1">Choose a region
+                                        first</label>
+                                    <div class="invalid-feedback">
+                                        Please select a city.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter the stockpile name. Must be between 3 and 10 long.
+                            </div>
+                        </div>
+                        <!-- City Select Shape-->
+                        <div class="col-sm-6" style="position:relative !important" id="citySelectionMap">
+                            <svg viewBox="-100 -90 200 180" fill="#303030">
+                                <g id="citySelection-shape" onclick="selectHexShape('DeadLandsHex')"
+                                    fill="url(#imageMapDeadLandsHex)" disabled="true">
+                                    <polygon points="100,0 50,-87 -50,-87 -100,-0 -50,87 50,87"></polygon>
+                                    <text dominant-baseline="text-after-edge" text-anchor="middle"
+                                        id="selectRegionShapeText1">Choose a</text>
+                                    <text dominant-baseline="text-before-edge" text-anchor="middle"
+                                        id="selectRegionShapeText2">region first</text>
+                                    <title id="citySelectionShapeTitle">City selection </title>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <h4>Stockpile info :</h4>
+                    <div class="mb-3 row">
+                        <label for="inputName" class="col-sm-4 col-form-label">Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="name" class="form-control" id="inputName" placeholder="11eRC-FL 1"
+                                value="11eRC-FL " minlength="3" maxlength="10" required>
+                            <div class="invalid-feedback">
+                                Please enter the name. Must be between 3 and 10 long.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="inputCode" class="col-sm-4 col-form-label">Code</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="code" class="form-control" id="inputCode" placeholder="123456"
+                                pattern="[0-9]{6}" maxlength="6" required autocomplete="off">
+                            <div class="invalid-feedback">
+                                Please enter the code. Must be 6 numbers long. Only number.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-5 row">
+                        <label for="inputCreator" class="col-sm-4 col-form-label">Creator name</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="creator" class="form-control" id="inputCreator"
+                                placeholder="Username" minlength="1" required>
+                            <div class="invalid-feedback">
+                                Please enter a name. If you don't know, enter "Unknow" or something else.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class="col-12">
+                            <input id="submitButton" class="w-100" type="submit" value="Generate discord message ⬇️"
+                                onclick="return generateDiscordMessage(event);">
+                        </div>
+                    </div>
+                </form>
+                <div class="mb-3 form-group">
+                    <label for="outputForm">Copy and paste this in #codes-reserves channel</label>
+                    <textarea class="form-control" id="outputForm" rows="4"></textarea>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-12">
+                        <input class="w-100" type="button" value="Copy to clipboard 📋"
+                            onclick="copyToClipboard(this, 'outputForm');">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div id="discord-input">
+            <h2>Update the list</h2>
+            <div>This section generates a list of all stockpiles codes, sorted by region and cities. You
+                can then copy and paste it in #codes-reserves.
+                <br>
+                Select
+                <span class="">all messages
+                    <span class="text">pseudos, useless lines, ect... absolutely everything</span>
+                </span>
+                from the channel, do
+                <span class=""><kbd>Ctrl</kbd> + <kbd>C</kbd>
+                    <span class="text">"Right click > Copy" doesn't work</span>
+                </span>
+                and paste it in the area below. Remember to make sure that all new codes have been added correctly.
+            </div>
+            <br>
+            <form>
+                <label for="codesReserveChannelContent" class="form-label">#codes-reserves content</label>
+                <textarea class="form-control" name="discord-input" id="codesReserveChannelContent" cols="55" rows="5"
+                    minlength="10"></textarea>
+                <br>
+                <input type="button" value="Generate" id="discord-input-button" onclick="parseTextareaInput()">
+            </form>
+            <p>Copy/paste the generated list into a new message on the channel. Formatting and emojis are
+                already set.</p>
+        </div>
+    </div>
+    <footer>
+        <p class="text-center p-5">Par Metylene, pour le 11e RC-FL. Emblème du clan par Marlow.</p>
+    </footer>
+</body>
+<script src="src/js/app.js"></script>
+
+</html>
