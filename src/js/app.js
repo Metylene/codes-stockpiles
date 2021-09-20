@@ -35,7 +35,7 @@ function transformNameInID(locationName) {
 
 async function loadStorageItems(regionName) {
     storageItemsByRegion[regionName] = [];
-    let staticData = await fetch('https://war-service-dev.foxholeservices.com/api/worldconquest/maps/' + regionName + '/static')
+    let staticData = await fetch('https://war-service-live.foxholeservices.com/api/worldconquest/maps/' + regionName + '/static')
         .then(function (response) {
             if (!response.ok) {
                 throw Error(response.statusText);
@@ -47,7 +47,7 @@ async function loadStorageItems(regionName) {
             // console.error(err);
         });
     if (!staticData) return;
-    let dynamicData = await fetch('https://war-service-dev.foxholeservices.com/api/worldconquest/maps/' + regionName + '/dynamic/public')
+    let dynamicData = await fetch('https://war-service-live.foxholeservices.com/api/worldconquest/maps/' + regionName + '/dynamic/public')
         .then(function (response) {
             if (!response.ok) {
                 throw Error(response.statusText);
