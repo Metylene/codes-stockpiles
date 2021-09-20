@@ -287,7 +287,7 @@ function strikeStockpile(stockpileElt) {
     const imgElt = stockpileInfosElt.querySelector('img');
     let newTagName;
     if (stockpileInfosElt.tagName != 'S') {
-        imgElt.setAttribute('alt', 'x');
+        imgElt.setAttribute('alt', ':x:');
         imgElt.src = './assets/x.svg';
 
         newTagName = 'S';
