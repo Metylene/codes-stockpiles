@@ -13,6 +13,19 @@ function createElement(tagName, parent = null, attributs = null) {
     }
     return elt;
 }
+// Replace tag name but keep element contents
+function changeTag(el, newTagName, keepAttributes) {
+    let newEl = document.createElement(newTagName);
+    while (el.firstChild) {
+        newEl.appendChild(el.firstChild);
+    }
+    if (keepAttributes) {
+        for (let i = el.attributes.length - 1; i >= 0; --i) {
+            newEl.attributes.setNamedItem(el.attributes[i].cloneNode());
+        }
+    }
+    el.parentNode.replaceChild(newEl, el);
+}
 function DistSquared(pt1, pt2) {
     return Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2);
 }
@@ -22,7 +35,7 @@ function transformNameInID(locationName) {
 
 async function loadStorageItems(regionName) {
     storageItemsByRegion[regionName] = [];
-    let staticData = await fetch('https://war-service-live.foxholeservices.com/api/worldconquest/maps/' + regionName + '/static')
+    let staticData = await fetch('https://war-service-dev.foxholeservices.com/api/worldconquest/maps/' + regionName + '/static')
         .then(function (response) {
             if (!response.ok) {
                 throw Error(response.statusText);
@@ -34,7 +47,7 @@ async function loadStorageItems(regionName) {
             // console.error(err);
         });
     if (!staticData) return;
-    let dynamicData = await fetch('https://war-service-live.foxholeservices.com/api/worldconquest/maps/' + regionName + '/dynamic/public')
+    let dynamicData = await fetch('https://war-service-dev.foxholeservices.com/api/worldconquest/maps/' + regionName + '/dynamic/public')
         .then(function (response) {
             if (!response.ok) {
                 throw Error(response.statusText);
@@ -155,19 +168,18 @@ function addStoragePin(pos, item) {
 }
 
 function generateDiscordMessage(event) {
-    // Validation form
     event.preventDefault();
     event.stopPropagation();
+
+    // Validation form
     const formElt = document.querySelector('.needs-validation');
-    if (!formElt.checkValidity()) {
+    const formData = new FormData(formElt);
+    if (!formElt.checkValidity() || !formData.get('city')) {
         formElt.classList.add('was-validated');
         return false;
     }
 
     // Generate message
-    const formData = new FormData(formElt);
-    console.log('city : ', formData.get('city'));
-
     const separatorChar = "・";
     let message = ":new:";
     message += separatorChar + "**" + formData.get('region').replace("Hex", "").replace(/([A-Z])/g, ' $1').trim() + "**";
@@ -192,28 +204,162 @@ function generateDiscordMessage(event) {
     formElt.classList.remove('was-validated');
 }
 
-function copyToClipboard(buttonElement, elementToCopyId) {
+function copyToClipboard(buttonElt, elementToCopyId) {
     let inputElt = document.getElementById(elementToCopyId);
     if (inputElt == null || inputElt.value.trim() == "") {
         inputElt.classList.add('is-invalid');
         setTimeout(() => {
             inputElt.classList.remove('is-invalid');
-        }, 2000);
+        }, 5000);
         console.log("Can't copy !");
         return;
     }
     const inputValue = inputElt.value.trim();
     navigator.clipboard.writeText(inputValue)
         .then(() => {
-            if (buttonElement.value !== 'Copied ! ✔️') {
-                const originalText = buttonElement.value;
-                buttonElement.value = 'Copied ! ✔️';
+            if (buttonElt.value !== 'Copied ! ✔️') {
+                const originalText = buttonElt.value;
+                buttonElt.value = 'Copied ! ✔️';
                 setTimeout(() => {
-                    buttonElement.value = originalText;
+                    buttonElt.value = originalText;
                 }, 2000);
             }
         })
         .catch(err => {
             console.log('Something went wrong', err);
         })
+}
+
+function copyListToClipboard(buttonElt) {
+    const codeListEltClone = document.getElementById('codeList').cloneNode(true);
+    if (!codeListEltClone) { return; }
+    while (codeListEltClone.querySelector('button')) {
+        const elt = codeListEltClone.querySelector('button');
+        if (elt.parentNode.getAttribute('role') == "group") {
+            elt.parentNode.remove();
+        } else {
+            elt.remove();
+        }
+    }
+    while (codeListEltClone.querySelector('input[type="button"]')) {
+        const elt = codeListEltClone.querySelector('input[type="button"]')
+        elt.remove();
+    }
+    while (codeListEltClone.querySelector('input')) {
+        const elt = codeListEltClone.querySelector('input')
+        elt.replaceWith(elt.value);
+    }
+    while (codeListEltClone.querySelector('img')) {
+        const elt = codeListEltClone.querySelector('img')
+        elt.replaceWith(elt.getAttribute("alt"));
+    }
+
+    let codeListString = codeListEltClone.innerText
+        .replaceAll("  ", "")
+        .replaceAll("\n\n", "\n")
+        .replaceAll("\nhttps", " https")
+        .replaceAll("\n*", "*")
+        .replaceAll("\n・\n", "・")
+        .replaceAll("\n~~", "~~")
+        .replaceAll("\n:", ":")
+        .replaceAll("\n\n", "\n")
+
+    console.log(codeListString);
+    navigator.clipboard.writeText(codeListString)
+        .then(() => {
+            if (buttonElt.value !== 'List copied ! ✔️') {
+                buttonElt.classList.add('btn-success');
+                const originalText = buttonElt.value;
+                buttonElt.value = 'List copied ! ✔️';
+                setTimeout(() => {
+                    buttonElt.classList.remove('btn-success');
+                    buttonElt.value = originalText;
+                }, 1500);
+            }
+        })
+        .catch(err => {
+            console.log('Something went wrong', err);
+        });
+}
+
+function strikeStockpile(stockpileElt) {
+    const stockpileInfosElt = stockpileElt.children[0];
+    const imgElt = stockpileInfosElt.querySelector('img');
+    let newTagName;
+    if (stockpileInfosElt.tagName != 'S') {
+        imgElt.setAttribute('alt', 'x');
+        imgElt.src = './assets/x.svg';
+
+        newTagName = 'S';
+
+        const tildeElt = createElement('span', null, { classList: "visually-hidden" });
+        tildeElt.innerText = "~~";
+        const tildeElt2 = createElement('span', null, { classList: "visually-hidden" });
+        tildeElt2.innerText = "~~";
+        stockpileInfosElt.append(tildeElt);
+        stockpileInfosElt.prepend(tildeElt2);
+    } else {
+        imgElt.setAttribute('alt', ':regional_indicator_a:');
+        imgElt.src = './assets/capital_abcd.svg';
+
+        newTagName = 'DIV';
+
+        stockpileInfosElt.querySelectorAll('span.visually-hidden').forEach(function (elt) {
+            elt.parentNode.removeChild(elt);
+        });
+    }
+
+    changeTag(stockpileInfosElt, newTagName, true);
+}
+
+function removeStockpile(stockpileElt) {
+    stockpileElt.parentNode.removeChild(stockpileElt);
+}
+
+function addStockpile(cityElt) {
+    const stockpileElt = createElement('div', null, { classList: "stockpile d-flex align-items-center w-100" });
+    const stockpileContentElt = createElement('div', stockpileElt);
+    // stockpileContentElt.innerHTML = '<img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">\n<span>・</span>\n<span contenteditable="">11eRC-FL </span>\n<span>・</span>\n<span contenteditable="">111111</span>\n<span>・</span>\n<span contenteditable="">Unknow</span>\n';
+    createElement('img', stockpileContentElt, { src: "./assets/capital_abcd.svg", alt: ":regional_indicator_a:", draggable: false, classList: "emoji" });
+    createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
+    createElement('span', stockpileContentElt, { innerText: "11eRC-FL ", contentEditable: "true" });
+    createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
+    createElement('span', stockpileContentElt, { innerText: "111111", contentEditable: "true" });
+    createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
+    createElement('span', stockpileContentElt, { innerText: "Unknow", contentEditable: "true" });
+    stockpileContentElt.innerHTML += '\n\n\n';
+
+    const btnGroupElt = createElement('div', stockpileElt, { classList: "btn-group btn-group-sm ms-auto" });
+    btnGroupElt.setAttribute('role', 'group');
+    // btnGroupElt.innerHTML='<button class="btn btn-outline-warning" type="button" onclick="strikeStockpile(this.parentNode.parentNode)">\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-lg-inline"> Strike</span>\n</button>\n<button class="btn btn-outline-danger" type="button" onclick="removeStockpile(this.parentNode.parentNode)">\n<i class="fa fa-trash">\n</i>\n<span class="d-none d-lg-inline"> Remove</span>\n</button>';
+    const strikeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-warning", type: "button" });
+    strikeElt.setAttribute('onclick', 'strikeStockpile(this.parentNode.parentNode)');
+    strikeElt.innerHTML = '\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-lg-inline"> Strike</span>\n';
+    const removeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-danger", type: "button" });
+    removeElt.setAttribute('onclick', 'removeStockpile(this.parentNode.parentNode)');
+    removeElt.innerHTML = '\n<i class="fa fa-trash">\n</i>\n<span class="d-none d-lg-inline"> Remove</span>\n';
+
+
+    cityElt.insertBefore(stockpileElt, cityElt.children[cityElt.children.length - 1]);
+    //     <div class="stockpile d-flex align-items-center w-100">
+    //     <div>
+    //         <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" class="emoji">
+    //         ・
+    //         <span contenteditable="">11eRC-FL</span>
+    //         ・
+    //         <span contenteditable="">8ddd050</span>
+    //         ・
+    //         <span contenteditable="">Zeip</span>
+    //     </div>
+    //     <div class="btn-group btn-group-sm ms-auto" role="group">
+    //         <button class="btn btn-outline-warning" type="button" onclick="strikeStockpile(this.parentNode.parentNode)">
+    //             <i class="fa fa-strikethrough"></i>
+    //             <span class="d-none d-lg-inline"> Strike</span>
+    //         </button>
+    //         <button class="btn btn-outline-danger" type="button" onclick="removeStockpile(this.parentNode.parentNode)">
+    //             <i class="fa fa-trash"></i>
+    //             <span class="d-none d-lg-inline"> Remove</span>
+    //         </button>
+    //     </div>
+    // </div>
 }

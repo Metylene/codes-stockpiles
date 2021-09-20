@@ -5,7 +5,7 @@ body {
 
 header {
     display: flex;
-    overflow: hidden;
+    /* overflow: hidden; */
     justify-content: center;
     align-items: center;
 }
@@ -95,4 +95,50 @@ text {
 .form-check-input:checked {
     background-color: #e77c48;
     border-color: #e77c48;
+}
+
+/* Codes list section */
+
+.emoji {
+    -o-object-fit: contain;
+    object-fit: contain;
+    width: 1.375em;
+    height: 1.375em;
+}
+
+.emoji img {
+    -o-object-fit: contain;
+    object-fit: contain;
+    width: 1.375em;
+    height: 1.375em;
+}
+
+.region {
+    margin-top: -1em;
+}
+
+.stockpile {
+    margin-bottom: 0.25em;
+}
+
+/* .city input{
+    display: inline-block;
+    width: auto;
+} */
+
+.stockpileName {
+    max-width: 7em;
+}
+
+.stockpileCode {
+    max-width: 4em;
+}
+
+.stockpileCreator {
+    max-width: 10em;
+}
+
+.stockpile .separator{
+    margin-right: .25rem!important;
+    margin-left: .25rem!important;
 }

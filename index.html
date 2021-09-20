@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="src/css/bootstrap.css">
     <link rel="stylesheet" href="src/css/darkly-bootstrap.min.css">
     <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
@@ -30,7 +31,8 @@
     <div class="container">
         <div class="row">
             <h2>Add a stockpile</h2>
-            <p>Fill the form with the location and infos about the new stockpile. Then copy/paste the generated
+            <p><span class="lead">Fill the form with the location and infos about the new stockpile.</span> Then
+                copy/paste the generated
                 discord message in #codes-reserves channel.<br>
                 You can click on the hexes to select the region and city.</p>
         </div>
@@ -504,7 +506,7 @@
                     </div>
                     <div class="mb-5 row">
                         <label for="inputCreator" class="col-sm-4 col-form-label">Creator name</label>
-                        <div class="col-sm-8">
+                        <div class="col-md-8">
                             <input type="text" name="creator" class="form-control" id="inputCreator"
                                 placeholder="Username" minlength="1" required>
                             <div class="invalid-feedback">
@@ -514,50 +516,356 @@
                     </div>
                     <div class="mb-3 row">
                         <div class="col-12">
-                            <input id="submitButton" class="w-100" type="submit" value="Generate discord message ⬇️"
-                                onclick="return generateDiscordMessage(event);">
+                            <input id="submitButton" class="w-100 rounded" type="submit"
+                                value="Generate discord message ⬇️" onclick="return generateDiscordMessage(event);">
                         </div>
                     </div>
                 </form>
                 <div class="mb-3 form-group">
                     <label for="outputForm">Copy and paste this in #codes-reserves channel</label>
                     <textarea class="form-control" id="outputForm" rows="4"></textarea>
+                    <div class="invalid-feedback">Textarea is empty. Please fill the form.</div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-12">
-                        <input class="w-100" type="button" value="Copy to clipboard 📋"
+                        <input class="w-100 rounded" type="button" value="Copy to clipboard 📋"
                             onclick="copyToClipboard(this, 'outputForm');">
                     </div>
                 </div>
             </div>
         </div>
-
         <hr>
-        <div id="discord-input">
+        <div class="row mb-3">
             <h2>Update the list</h2>
-            <div>This section generates a list of all stockpiles codes, sorted by region and cities. You
-                can then copy and paste it in #codes-reserves.
+            <div><span class="lead">This section generates a list of all stockpiles codes,</span> sorted by region and
+                cities. You
+                can then post it in #codes-reserves.
                 <br>
-                Select
-                <span class="">all messages
-                    <span class="text">pseudos, useless lines, ect... absolutely everything</span>
-                </span>
-                from the channel, do
-                <span class=""><kbd>Ctrl</kbd> + <kbd>C</kbd>
-                    <span class="text">"Right click > Copy" doesn't work</span>
-                </span>
-                and paste it in the area below. Remember to make sure that all new codes have been added correctly.
+                Select all messages from the channel, do <kbd>Ctrl</kbd> + <kbd>C</kbd> and paste it in the area below.
             </div>
-            <br>
-            <form>
-                <label for="codesReserveChannelContent" class="form-label">#codes-reserves content</label>
-                <textarea class="form-control" name="discord-input" id="codesReserveChannelContent" cols="55" rows="5"
-                    minlength="10"></textarea>
+        </div>
+        <div class="row">
+            <div id="codeList" class="col-lg-7 bg-secondary rounded">
+                <div class="w-100 d-flex">
+                    <h3>#<span class="visually-hidden">**</span>Liste des codes<span class="visually-hidden">** -
+                            https://metylene.github.io/codes-reserves/</span></h3>
+                    <input class="btn btn-primary btn-lg ms-auto my-2" type="button" onclick="copyListToClipboard(this)"
+                        value="Copy to clipboard 📋"></input>
+                </div>
                 <br>
-                <input type="button" value="Generate" id="discord-input-button" onclick="parseTextareaInput()">
-            </form>
-            <p>Copy/paste the generated list into a new message on the channel. Formatting and emojis are
-                already set.</p>
+                <div class="region mb-3">
+                    <div class="name"><img class="emoji" draggable="false" alt=":black_small_square:"
+                            src="./assets/black_small_square.svg">
+                        <span class="visually-hidden">**</span>Reaching Trail<span class="visually-hidden">**</span>
+                    </div>
+                    <div id="brodytown" class="city">
+                        <div class="name"><img class="emoji" draggable="false" alt=":small_blue_diamond:"
+                                src="./assets/small_blue_diamond.svg">
+                            <span class="visually-hidden">*</span>Brodytown<span class="visually-hidden">*</span>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
+                                <span>・</span>
+                                <span contenteditable="">11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable="">111111</span>
+                                <span>・</span>
+                                <span contenteditable="">Unknow</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group">
+                                <button class="btn btn-outline-warning"
+                                    type="button" onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline">
+                                        Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Strike</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-success btn-sm" type="button"
+                            onclick="addStockpile(this.parentNode)">
+                            <i class="fa fa-plus"></i>
+                            <span>New Stockpile </span>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="region mb-3">
+                    <div class="name"><img class="emoji" draggable="false" alt=":black_small_square:"
+                            src="./assets/black_small_square.svg">
+                        <span class="visually-hidden">**</span>Reaching Trail<span class="visually-hidden">**</span>
+                    </div>
+                    <div id="brodytown" class="city">
+                        <div class="name"><img class="emoji" draggable="false" alt=":small_blue_diamond:"
+                                src="./assets/small_blue_diamond.svg">
+                            <span class="visually-hidden">*</span>Brodytown<span class="visually-hidden">*</span>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <s>
+                                <span class="visually-hidden">~~</span>
+                                <img src="/assets/x.svg" alt=":x:" draggable="false" class="emoji"></span>
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>sdfsdf</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                                <span class="visually-hidden">~~</span>
+                            </s>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-success btn-sm" type="button"
+                            onclick="addStockpile(this.parentNode)">
+                            <i class="fa fa-plus"></i>
+                            <span>New Stockpile </span>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="region mb-3">
+                    <div class="name"><img class="emoji" draggable="false" alt=":black_small_square:"
+                            src="./assets/black_small_square.svg">
+                        <span class="visually-hidden">**</span>Reaching Trail<span class="visually-hidden">**</span>
+                    </div>
+                    <div id="brodytown" class="city">
+                        <div class="name"><img class="emoji" draggable="false" alt=":small_blue_diamond:"
+                                src="./assets/small_blue_diamond.svg">
+                            <span class="visually-hidden">*</span>Brodytown<span class="visually-hidden">*</span>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <s>
+                                <span class="visually-hidden">~~</span>
+                                <img src="./assets/x.svg" alt=":x:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                                <span class="visually-hidden">~~</span>
+                            </s>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="stockpile d-flex align-items-center w-100">
+                            <div>
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <span>・</span>
+                                <span contenteditable>11eRC-FL</span>
+                                <span>・</span>
+                                <span contenteditable>8ddd050</span>
+                                <span>・</span>
+                                <span contenteditable>Zeip</span>
+                            </div>
+                            <div class="btn-group btn-group-sm ms-auto" role="group" aria-label="Basic example">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-strikethrough"></i>
+                                    <span class="d-none d-lg-inline"> Strike</span>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="removeStockpile(this.parentNode.parentNode)">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="d-none d-lg-inline"> Remove</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-success btn-sm" type="button"
+                            onclick="addStockpile(this.parentNode)">
+                            <i class="fa fa-plus"></i>
+                            <span>New Stockpile </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <footer>
