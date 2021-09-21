@@ -31,6 +31,8 @@ header #flag img {
     cursor: pointer;
 }
 
+/* SVG region selection */
+
 g {
     stroke: gray;
 }
@@ -53,6 +55,8 @@ text {
     fill: #303030;
     stroke: none;
 }
+
+/* city selection */
 
 .pin {
     width: 30px;
@@ -97,7 +101,7 @@ text {
     border-color: #e77c48;
 }
 
-/* Codes list section */
+/* Code list section */
 
 .emoji {
     -o-object-fit: contain;
@@ -121,24 +125,10 @@ text {
     margin-bottom: 0.25em;
 }
 
-/* .city input{
+.stockpileContent span:empty {
     display: inline-block;
-    width: auto;
-} */
-
-.stockpileName {
-    max-width: 7em;
-}
-
-.stockpileCode {
-    max-width: 4em;
-}
-
-.stockpileCreator {
-    max-width: 10em;
-}
-
-.stockpile .separator{
-    margin-right: .25rem!important;
-    margin-left: .25rem!important;
+    min-width: 0.75rem;
+    background-color: #dc3545;
+    border-radius: .2rem!important;
+    line-height: calc(var(--bs-body-line-height)*0.75);
 }

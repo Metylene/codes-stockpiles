@@ -263,6 +263,8 @@ function copyListToClipboard(buttonElt) {
         .replaceAll("\n~~", "~~")
         .replaceAll("\n:", ":")
         .replaceAll("\n\n", "\n")
+        .replaceAll("\n~~~~", "~~\n~~")
+        .replaceAll("\n~~:r", "~~\n:r")
 
     console.log(codeListString);
     navigator.clipboard.writeText(codeListString)
@@ -316,22 +318,22 @@ function removeStockpile(stockpileElt) {
     stockpileElt.parentNode.removeChild(stockpileElt);
 }
 
-function addStockpile(cityElt) {
+// data : { name : "string", code : "string", creator : "string"}
+function addStockpile(cityElt, data) {
+    if (!data) { data = {} }
     const stockpileElt = createElement('div', null, { classList: "stockpile d-flex align-items-center w-100" });
-    const stockpileContentElt = createElement('div', stockpileElt);
-    // stockpileContentElt.innerHTML = '<img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">\n<span>・</span>\n<span contenteditable="">11eRC-FL </span>\n<span>・</span>\n<span contenteditable="">111111</span>\n<span>・</span>\n<span contenteditable="">Unknow</span>\n';
+    const stockpileContentElt = createElement('div', stockpileElt, { classList: "stockpileContent" });
     createElement('img', stockpileContentElt, { src: "./assets/capital_abcd.svg", alt: ":regional_indicator_a:", draggable: false, classList: "emoji" });
     createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
-    createElement('span', stockpileContentElt, { innerText: "11eRC-FL ", contentEditable: "true" });
+    createElement('span', stockpileContentElt, { innerText: data.name ?? "", contentEditable: "true", spellcheck: false });
     createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
-    createElement('span', stockpileContentElt, { innerText: "111111", contentEditable: "true" });
+    createElement('span', stockpileContentElt, { innerText: data.code ?? "", contentEditable: "true", spellcheck: false });
     createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
-    createElement('span', stockpileContentElt, { innerText: "Unknow", contentEditable: "true" });
+    createElement('span', stockpileContentElt, { innerText: data.creator ?? "", contentEditable: "true", spellcheck: false });
     stockpileContentElt.innerHTML += '\n\n\n';
 
     const btnGroupElt = createElement('div', stockpileElt, { classList: "btn-group btn-group-sm ms-auto" });
     btnGroupElt.setAttribute('role', 'group');
-    // btnGroupElt.innerHTML='<button class="btn btn-outline-warning" type="button" onclick="strikeStockpile(this.parentNode.parentNode)">\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-lg-inline"> Strike</span>\n</button>\n<button class="btn btn-outline-danger" type="button" onclick="removeStockpile(this.parentNode.parentNode)">\n<i class="fa fa-trash">\n</i>\n<span class="d-none d-lg-inline"> Remove</span>\n</button>';
     const strikeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-warning", type: "button" });
     strikeElt.setAttribute('onclick', 'strikeStockpile(this.parentNode.parentNode)');
     strikeElt.innerHTML = '\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-lg-inline"> Strike</span>\n';
@@ -341,25 +343,15 @@ function addStockpile(cityElt) {
 
 
     cityElt.insertBefore(stockpileElt, cityElt.children[cityElt.children.length - 1]);
-    //     <div class="stockpile d-flex align-items-center w-100">
-    //     <div>
-    //         <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" class="emoji">
-    //         ・
-    //         <span contenteditable="">11eRC-FL</span>
-    //         ・
-    //         <span contenteditable="">8ddd050</span>
-    //         ・
-    //         <span contenteditable="">Zeip</span>
-    //     </div>
-    //     <div class="btn-group btn-group-sm ms-auto" role="group">
-    //         <button class="btn btn-outline-warning" type="button" onclick="strikeStockpile(this.parentNode.parentNode)">
-    //             <i class="fa fa-strikethrough"></i>
-    //             <span class="d-none d-lg-inline"> Strike</span>
-    //         </button>
-    //         <button class="btn btn-outline-danger" type="button" onclick="removeStockpile(this.parentNode.parentNode)">
-    //             <i class="fa fa-trash"></i>
-    //             <span class="d-none d-lg-inline"> Remove</span>
-    //         </button>
-    //     </div>
-    // </div>
+document.addEventListener("keydown", e => {
+    if (e.isComposing || e.key != "Enter") {
+        return;
+    }
+    if (e.target.getAttribute('contenteditable') == null) {
+        return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    e.target.blur();
+});
 }
