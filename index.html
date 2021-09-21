@@ -451,7 +451,7 @@
                     <!-- City Select -->
                     <div class="row">
                         <!-- Cities radio group -->
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div for="regionSelect" class="col-form-label">City</div>
                             <div id="citiesRadioGroup">
                                 <div class="form-check form-check-inline">
@@ -469,7 +469,7 @@
                             </div>
                         </div>
                         <!-- City Select Shape-->
-                        <div class="col-sm-6" style="position:relative !important" id="citySelectionMap">
+                        <div class="col-sm-8" style="position:relative !important" id="citySelectionMap">
                             <svg viewBox="-100 -90 200 180" fill="#303030">
                                 <g id="citySelection-shape" onclick="selectHexShape('DeadLandsHex')"
                                     fill="url(#imageMapDeadLandsHex)" disabled="true">
@@ -516,19 +516,20 @@
                     </div>
                     <div class="mb-3 row">
                         <div class="col-12">
-                            <input id="submitButton" class="w-100 rounded" type="submit"
+                            <input id="submitButton" class="w-100 btn btn-primary btn-lg" type="submit"
                                 value="Generate discord message ⬇️" onclick="return generateDiscordMessage(event);">
                         </div>
                     </div>
                 </form>
-                <div class="mb-3 form-group">
-                    <label for="outputForm">Copy and paste this in #codes-reserves channel</label>
-                    <textarea class="form-control" id="outputForm" rows="4"></textarea>
+                <div class="mb-3 form-floating text-white">
+                    <textarea class="form-control bg-info bg-opacity-25 text-white" id="outputForm"
+                        style="height:8em; padding-bottom: 0!important;"></textarea>
+                    <label class="text-white" for="outputForm">Copy and paste this in codes-reserves #channel</label>
                     <div class="invalid-feedback">Textarea is empty. Please fill the form.</div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-12">
-                        <input class="w-100 rounded" type="button" value="Copy to clipboard 📋"
+                        <input class="w-100 btn btn-secondary text-white" type="button" value="Copy to clipboard 📋"
                             onclick="copyToClipboard(this, 'outputForm');">
                     </div>
                 </div>
@@ -537,16 +538,34 @@
         <hr>
         <div class="row mb-3">
             <h2>Update the list</h2>
-            <div><span class="lead">This section generates a list of all stockpiles codes,</span> sorted by region and
-                cities. You
-                can then post it in #codes-reserves.
-                <br>
-                Select all messages from the channel, do <kbd>Ctrl</kbd> + <kbd>C</kbd> and paste it in the area below.
+            <div><span class="lead">This section creates a list of all stockpiles codes,</span> sorted by region and
+                cities. You can then post it in #codes-reserves.
             </div>
         </div>
-        <div class="row">
-            <div id="codeList" class="col-lg-7 bg-secondary rounded">
-                <div class="w-100 d-flex">
+        <div class="row flex-lg-row-reverse">
+            <div class="col-lg-5 col-xl-6 mb-3">
+                <div id="channelContentGathering" class="sticky-lg-top" style="top:1em">
+                    <h4 class="mt-3">#Codes-reserves content collection</h4>
+                    <p>Select all messages from the channel, press <kbd>Ctrl</kbd>+<kbd>C</kbd> and paste it in the area
+                        below.<small> Do not <kbd>Right click</kbd> and <kbd>Copy</kbd> ; On Discord it's not the same
+                            result.</small></p>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text text-white">Paste here the<br>content
+                            of<br>codes-reserves<br>#channel</span>
+                        <textarea class="form-control bg-info bg-opacity-25 text-white"
+                            aria-label="#codes-reserves content" style="min-height: 8em;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <div class="col-12">
+                            <button class="w-100 btn btn-primary btn-lg" type="button"
+                                onclick="parseTextareaContent();">Add to the list</button>
+                        </div>
+                    </div>
+                </div>
+                <hr class="d-block d-lg-none">
+            </div>
+            <div id="codeList" class="col-lg-7 col-xl-6 bg-secondary rounded">
+                <div class="w-100 d-flex mt-3">
                     <h3>#<span class="visually-hidden">**</span>Liste des codes<span class="visually-hidden">** -
                             https://metylene.github.io/codes-reserves/</span></h3>
                     <input class="btn btn-primary btn-lg ms-auto my-2" type="button" onclick="copyListToClipboard(this)"
@@ -575,8 +594,8 @@
                                 <span contenteditable="">Unknow</span>
                             </div>
                             <div class="btn-group btn-group-sm ms-auto" role="group">
-                                <button class="btn btn-outline-warning"
-                                    type="button" onclick="strikeStockpile(this.parentNode.parentNode)">
+                                <button class="btn btn-outline-warning" type="button"
+                                    onclick="strikeStockpile(this.parentNode.parentNode)">
                                     <i class="fa fa-strikethrough"></i>
                                     <span class="d-none d-lg-inline">
                                         Strike</span>
@@ -590,7 +609,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -613,7 +633,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -635,7 +656,7 @@
                             </div>
                         </div>
                         <button class="btn btn-outline-success btn-sm" type="button"
-                            onclick="addStockpile(this.parentNode)">
+                            onclick="addStockpileElt(this.parentNode)">
                             <i class="fa fa-plus"></i>
                             <span>New Stockpile </span>
                         </button>
@@ -654,7 +675,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -702,7 +724,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -725,7 +748,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -747,7 +771,7 @@
                             </div>
                         </div>
                         <button class="btn btn-outline-success btn-sm" type="button"
-                            onclick="addStockpile(this.parentNode)">
+                            onclick="addStockpileElt(this.parentNode)">
                             <i class="fa fa-plus"></i>
                             <span>New Stockpile </span>
                         </button>
@@ -766,7 +790,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -814,7 +839,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -837,7 +863,8 @@
                         </div>
                         <div class="stockpile d-flex align-items-center w-100">
                             <div class="stockpileContent">
-                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false" class="emoji">
+                                <img src="./assets/capital_abcd.svg" alt=":regional_indicator_a:" draggable="false"
+                                    class="emoji">
                                 <span>・</span>
                                 <span contenteditable>11eRC-FL</span>
                                 <span>・</span>
@@ -859,7 +886,7 @@
                             </div>
                         </div>
                         <button class="btn btn-outline-success btn-sm" type="button"
-                            onclick="addStockpile(this.parentNode)">
+                            onclick="addStockpileElt(this.parentNode)">
                             <i class="fa fa-plus"></i>
                             <span>New Stockpile </span>
                         </button>

@@ -128,7 +128,7 @@ async function updateCitySelect(regionName) {
             classList: "form-check-input"
         }
         let indexByCity = "";
-        while(radioGroupElt.querySelector(`#${options.id+indexByCity}`)){
+        while (radioGroupElt.querySelector(`#${options.id + indexByCity}`)) {
             indexByCity++;
         }
         options.value = options.value + indexByCity;
@@ -328,7 +328,7 @@ function removeStockpile(stockpileElt) {
 }
 
 // data : { name : "string", code : "string", creator : "string"}
-function addStockpile(cityElt, data) {
+function addStockpileElt(cityElt, data = null) {
     if (!data) { data = {} }
     const stockpileElt = createElement('div', null, { classList: "stockpile d-flex align-items-center w-100" });
     const stockpileContentElt = createElement('div', stockpileElt, { classList: "stockpileContent" });
@@ -380,3 +380,7 @@ function setStockpileImageAlt() {
 }
 // Remove that when done with pre-entered data
 setStockpileImageAlt();
+
+function parseTextareaContent() {
+
+}
