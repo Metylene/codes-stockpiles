@@ -144,7 +144,7 @@ async function updateCitySelect(regionName) {
         }
         createElement('label', divElt, { classList: "form-check-label", htmlFor: options.id, innerHTML: options.value, id: options.id + "Label" });
 
-        addStoragePin({ x: storageItem.x, y: storageItem.y }, { cityName: storageItem.cityName, team: storageItem.teamId.toLowerCase(), type: storageItem.iconType + "" });
+        addStoragePin({ x: storageItem.x, y: storageItem.y }, { cityName: options.value, team: storageItem.teamId.toLowerCase(), type: storageItem.iconType + "" });
     }
     if (inputElt) createElement('div', inputElt.parentNode, { innerHTML: "Please select a city.", classList: "invalid-feedback" })
 
