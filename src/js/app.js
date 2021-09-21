@@ -312,10 +312,14 @@ function strikeStockpile(stockpileElt) {
     }
 
     changeTag(stockpileInfosElt, newTagName, true);
+
+    setStockpileImageAlt();
 }
 
 function removeStockpile(stockpileElt) {
     stockpileElt.parentNode.removeChild(stockpileElt);
+
+    setStockpileImageAlt();
 }
 
 // data : { name : "string", code : "string", creator : "string"}
@@ -343,6 +347,11 @@ function addStockpile(cityElt, data) {
 
 
     cityElt.insertBefore(stockpileElt, cityElt.children[cityElt.children.length - 1]);
+
+    setStockpileImageAlt();
+}
+
+// Add keyboard listener on "RETURN" key to prevent adding line break on span[contenteditable]
 document.addEventListener("keydown", e => {
     if (e.isComposing || e.key != "Enter") {
         return;
@@ -354,4 +363,14 @@ document.addEventListener("keydown", e => {
     e.stopPropagation();
     e.target.blur();
 });
+
+function setStockpileImageAlt() {
+    const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    let index = 0;
+    document.querySelectorAll('.stockpile>div.stockpileContent').forEach(function (elt) {
+        console.log(elt);
+        elt.querySelector('img').setAttribute('alt', `:regional_indicator_${alphabet[index]}:`);
+        index++;
+        if (index >= 26) { index = 0 }
+    })
 }
