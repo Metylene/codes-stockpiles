@@ -374,3 +374,5 @@ function setStockpileImageAlt() {
         if (index >= 26) { index = 0 }
     })
 }
+// Remove that when done with pre-entered data
+setStockpileImageAlt();
