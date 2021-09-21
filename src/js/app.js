@@ -127,6 +127,12 @@ async function updateCitySelect(regionName) {
             required: true,
             classList: "form-check-input"
         }
+        let indexByCity = "";
+        while(radioGroupElt.querySelector(`#${options.id+indexByCity}`)){
+            indexByCity++;
+        }
+        options.value = options.value + indexByCity;
+        options.id = options.id + indexByCity;
         inputElt = createElement('input', divElt, options);
         inputElt.onclick = function (event) {
             const radioInputs = document.getElementsByName(event.target.name);
@@ -266,7 +272,6 @@ function copyListToClipboard(buttonElt) {
         .replaceAll("\n~~~~", "~~\n~~")
         .replaceAll("\n~~:r", "~~\n:r")
 
-    console.log(codeListString);
     navigator.clipboard.writeText(codeListString)
         .then(() => {
             if (buttonElt.value !== 'List copied ! ✔️') {
@@ -368,7 +373,6 @@ function setStockpileImageAlt() {
     const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
     let index = 0;
     document.querySelectorAll('.stockpile>div.stockpileContent').forEach(function (elt) {
-        console.log(elt);
         elt.querySelector('img').setAttribute('alt', `:regional_indicator_${alphabet[index]}:`);
         index++;
         if (index >= 26) { index = 0 }
