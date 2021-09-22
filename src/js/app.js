@@ -487,7 +487,7 @@ function parseTextareaContent() {
 }
 
 function createLocationNameElt(name, emoji, isRegion = false) {
-    const divNameElt = createElement('div');
+    const divNameElt = createElement('div', null, {classList: "name"});
 
     const style = isRegion ? '**' : '*';
     divNameElt.innerHTML = `<span class="visually-hidden">${style}</span>${name}<span class="visually-hidden">${style}</span>\n`;
@@ -521,7 +521,7 @@ function getCityEltOrCreateIt(regionElt, cityName) {
         return cityElt;
     }
     cityElt = createElement('div', regionElt, { classList: "city", id: cityId });
-    cityElt.innerHTML = `<button class="btn btn-outline-success btn-sm mb-1" type="button" onclick="addStockpileElt(this.parentNode)"><i class="fa fa-plus"></i><span>New Stockpile </span></button>`;
+    cityElt.innerHTML = `<button class="btn btn-outline-success btn-sm mb-1" type="button" onclick="addStockpileElt(this.parentNode)"><i class="fa fa-plus"></i><span> New Stockpile </span></button>`;
     nameElt = createLocationNameElt(cityName, ":small_blue_diamond:", false);
     cityElt.prepend(nameElt);
     cityElt.innerHTML += '\n';

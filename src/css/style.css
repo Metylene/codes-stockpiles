@@ -108,6 +108,7 @@ text {
     object-fit: contain;
     width: 1.375em;
     height: 1.375em;
+    margin-right: 0.2em;
 }
 
 .emoji img {
@@ -119,6 +120,14 @@ text {
 
 .region {
     margin-top: -1em;
+}
+
+.region>.name {
+    font-weight: bold;
+}
+
+.city>.name {
+    font-style: italic;
 }
 
 .stockpile {
