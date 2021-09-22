@@ -383,4 +383,6 @@ setStockpileImageAlt();
 
 function parseTextareaContent() {
 
+function fillTextareaWithDebugdata(){
+    document.getElementById('textareaChannelContent').value = `[11eRC] Guismo ⊙⊜⊚ — 16/09/2021\n#Liste des codes - https://metylene.github.io/codes-reserves/\n\n:black_small_square: Reaching Trail\n:small_blue_diamond: Brodytown\n:x:・11eRC-FL・801050・Zeip\n:x:・11eRC-FL・801050・Zeip\n:x:・11eRC-FL・801050・Zeip\n:regional_indicator_b:・11eRC-FL 2・353618・Killa\n\n:black_small_square: Godcrofts\n\n:small_blue_diamond: The Axehead\n:regional_indicator_c:・11eRC-FL 1・166753・Ciselin\n\n:black_small_square: Viper Pit\n:small_blue_diamond: Kirknell\n:regional_indicator_d:・11eRC-FL 1・739921・Ciselin\n:x:・11eRC-FL 1・739921・Ciselin\n\n:black_small_square: Callahan's Passage\n:small_blue_diamond: Lochan\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n\n### Critical deadline before a new list is needed : 3 days ago - https://metylene.github.io/codes-reserves/\n[11eRC] SterlifngCroco — 17/09/2021\n:new:・Shackled Chasm・*Widow's Web・11eRC-FL ・811803・SterlingCroo\n[11eRC] Guismo ⊙⊜⊚ — 19/09/2021\n═══════════════════════════╣WAR 83 ╠`;
 }
