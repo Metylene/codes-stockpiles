@@ -1,8 +1,8 @@
 // let regionNameArray = ["TheFingersHex", "GreatMarchHex", "TempestIslandHex", "MarbanHollow", "ViperPitHex", "BasinSionnachHex", "DeadLandsHex", "HeartlandsHex", "EndlessShoreHex", "WestgateHex", "OarbreakerHex", "AcrithiaHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex", "MorgensCrossingHex", "StonecradleHex", "AllodsBightHex", "KalokaiHex", "RedRiverHex", "OriginHex", "HowlCountyHex", "ShackledChasmHex", "SpeakingWoodsHex", "TerminusHex", "LinnMercyHex", "ClansheadValleyHex", "GodcroftsHex", "NevishLineHex", "CallumsCapeHex", "FishermansRowHex", "UmbralWildwoodHex", "ReachingTrailHex", "CallahansPassageHex", "AshFieldsHex", "DrownedValeHex", "FarranacCoastHex"];
 // let regionNameArray = [ "StonecradleHex", "AllodsBightHex", "TempestIslandHex", "GreatMarchHex", "MarbanHollow", "ViperPitHex", "ShackledChasmHex", "HeartlandsHex", "DeadLandsHex", "LinnMercyHex", "EndlessShoreHex", "GodcroftsHex", "FishermansRowHex", "WestgateHex", "ReachingTrailHex", "UmbralWildwoodHex", "OarbreakerHex", "CallahansPassageHex", "DrownedValeHex", "FarranacCoastHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex" ];
 let storageItemsByRegion = []; // data from api/regionName/dynamic/public + property cityName with closest Major maptextItems
-const emojiStockpileArray =  ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
-const emojiArray = emojiStockpileArray.concat(['◼️', '🔹', '❌']);
+const emojiStockpileArray =  ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿', '❌'];
+const emojiArray = emojiStockpileArray.concat(['◼️', '🔹']);
 
 const codeListElt = document.querySelector('#codeList');
 
@@ -390,8 +390,6 @@ function setStockpileImageAlt() {
         if (index >= 26) { index = 0 }
     })
 }
-// Remove that when done with pre-entered data
-setStockpileImageAlt();
 
 // ^(:)(\w{1,64})(:) Regex : line start with ':', follow by 1 to 64 alphanumeric char or underscore, followed by ':'
 // Basically : Line start with an emoji ?
@@ -420,6 +418,10 @@ function parseTextareaContent() {
     let currentRegionElt, currentCityElt;
     const rows = channelContent.split('\n');
     rows.forEach(row => {
+        // remove '*' and '~' if input is comming directly from 'Add stockpile' form or #codeList
+        row = row.replaceAll("*", "");
+        row = row.replaceAll("~", "");
+
         if (!isStartingWithEmoji(row)) {
             console.log('not starting with emoji');
             return;
@@ -430,9 +432,6 @@ function parseTextareaContent() {
         } else {
             emoji = split(row, '', 1)[0];
         }
-
-        // remove '*' if input is comming directly from 'Add stockpile' form
-        row = row.replaceAll("*", "");
 
         if (emoji == ":new:") {
             const rowParts = row.split("・");
@@ -465,7 +464,7 @@ function parseTextareaContent() {
                 return;
             }
             currentCityElt = getCityEltOrCreateIt(currentRegionElt ?? codeListElt, cityName);
-        } else if (emoji.startsWith(':regional') || emoji == ':x:' || emoji == '❌' || emojiStockpileArray.includes(emoji)) {
+        } else if (emoji.startsWith(':regional') || emoji == ':x:' || emojiStockpileArray.includes(emoji)) {
             const rowParts = row.split("・");
             if (rowParts.length != 4) {
                 console.log('Problem with this line : ', row);
