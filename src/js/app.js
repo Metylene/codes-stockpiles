@@ -1,8 +1,8 @@
 // let regionNameArray = ["TheFingersHex", "GreatMarchHex", "TempestIslandHex", "MarbanHollow", "ViperPitHex", "BasinSionnachHex", "DeadLandsHex", "HeartlandsHex", "EndlessShoreHex", "WestgateHex", "OarbreakerHex", "AcrithiaHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex", "MorgensCrossingHex", "StonecradleHex", "AllodsBightHex", "KalokaiHex", "RedRiverHex", "OriginHex", "HowlCountyHex", "ShackledChasmHex", "SpeakingWoodsHex", "TerminusHex", "LinnMercyHex", "ClansheadValleyHex", "GodcroftsHex", "NevishLineHex", "CallumsCapeHex", "FishermansRowHex", "UmbralWildwoodHex", "ReachingTrailHex", "CallahansPassageHex", "AshFieldsHex", "DrownedValeHex", "FarranacCoastHex"];
 // let regionNameArray = [ "StonecradleHex", "AllodsBightHex", "TempestIslandHex", "GreatMarchHex", "MarbanHollow", "ViperPitHex", "ShackledChasmHex", "HeartlandsHex", "DeadLandsHex", "LinnMercyHex", "EndlessShoreHex", "GodcroftsHex", "FishermansRowHex", "WestgateHex", "ReachingTrailHex", "UmbralWildwoodHex", "OarbreakerHex", "CallahansPassageHex", "DrownedValeHex", "FarranacCoastHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex" ];
 let storageItemsByRegion = []; // data from api/regionName/dynamic/public + property cityName with closest Major maptextItems
-const emojiStockpileArray =  ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿', '❌'];
-const emojiArray = emojiStockpileArray.concat(['◼️', '🔹']);
+const emojiStockpileArray = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿', '❌'];
+const emojiArray = emojiStockpileArray.concat(['◼️', '🔹', '🆕']);
 
 const codeListElt = document.querySelector('#codeList');
 
@@ -433,7 +433,7 @@ function parseTextareaContent() {
             emoji = split(row, '', 1)[0];
         }
 
-        if (emoji == ":new:") {
+        if (emoji == ":new:" || emoji == '🆕') {
             const rowParts = row.split("・");
             if (rowParts.length != 6) {
                 console.log('Problem with this line : ', row);
@@ -487,7 +487,7 @@ function parseTextareaContent() {
 }
 
 function createLocationNameElt(name, emoji, isRegion = false) {
-    const divNameElt = createElement('div', null, {classList: "name"});
+    const divNameElt = createElement('div', null, { classList: "name" });
 
     const style = isRegion ? '**' : '*';
     divNameElt.innerHTML = `<span class="visually-hidden">${style}</span>${name}<span class="visually-hidden">${style}</span>\n`;
