@@ -1,6 +1,7 @@
 // let regionNameArray = ["TheFingersHex", "GreatMarchHex", "TempestIslandHex", "MarbanHollow", "ViperPitHex", "BasinSionnachHex", "DeadLandsHex", "HeartlandsHex", "EndlessShoreHex", "WestgateHex", "OarbreakerHex", "AcrithiaHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex", "MorgensCrossingHex", "StonecradleHex", "AllodsBightHex", "KalokaiHex", "RedRiverHex", "OriginHex", "HowlCountyHex", "ShackledChasmHex", "SpeakingWoodsHex", "TerminusHex", "LinnMercyHex", "ClansheadValleyHex", "GodcroftsHex", "NevishLineHex", "CallumsCapeHex", "FishermansRowHex", "UmbralWildwoodHex", "ReachingTrailHex", "CallahansPassageHex", "AshFieldsHex", "DrownedValeHex", "FarranacCoastHex"];
 // let regionNameArray = [ "StonecradleHex", "AllodsBightHex", "TempestIslandHex", "GreatMarchHex", "MarbanHollow", "ViperPitHex", "ShackledChasmHex", "HeartlandsHex", "DeadLandsHex", "LinnMercyHex", "EndlessShoreHex", "GodcroftsHex", "FishermansRowHex", "WestgateHex", "ReachingTrailHex", "UmbralWildwoodHex", "OarbreakerHex", "CallahansPassageHex", "DrownedValeHex", "FarranacCoastHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex" ];
 let storageItemsByRegion = []; // data from api/regionName/dynamic/public + property cityName with closest Major maptextItems
+const codeListElt = document.querySelector('#codeList');
 
 // helpers
 function createElement(tagName, parent = null, attributs = null) {
@@ -261,17 +262,23 @@ function copyListToClipboard(buttonElt) {
     }
 
     let codeListString = codeListEltClone.innerText
-        .replaceAll("  ", "")
-        .replaceAll("\n\n", "\n")
-        .replaceAll("\nhttps", " https")
-        .replaceAll("\n*", "*")
-        .replaceAll("\n・\n", "・")
-        .replaceAll("\n~~", "~~")
-        .replaceAll("\n:", ":")
-        .replaceAll("\n\n", "\n")
-        .replaceAll("\n~~~~", "~~\n~~")
-        .replaceAll("\n~~:r", "~~\n:r")
+    .replaceAll("  ", "")
+    .replaceAll("\n\n", "\n")
+    .replaceAll("\nhttps", " https")
+    .replaceAll("\n~~\n", "~~\n")
+    // .replaceAll("\n*", "*")
+    // .replaceAll("\n・\n", "・")
+    // .replaceAll("\n~~", "~~")
+    // .replaceAll("\n:", ":")
+    // .replaceAll(":**:", ":**\n:")
+    // // .replaceAll("\n\n", "\n")
+    // .replaceAll("\n~~~~", "~~\n~~")
+    // .replaceAll("\n~~:", "~~\n:")
+    // .replaceAll("*~~", "*\n~~")
+    // .replaceAll("*:r", "*\n:r")
+    // .replaceAll("**:s", "**\n:s")
 
+    console.log(codeListString);
     navigator.clipboard.writeText(codeListString)
         .then(() => {
             if (buttonElt.value !== 'List copied ! ✔️') {
@@ -303,8 +310,9 @@ function strikeStockpile(stockpileElt) {
         tildeElt.innerText = "~~";
         const tildeElt2 = createElement('span', null, { classList: "visually-hidden" });
         tildeElt2.innerText = "~~";
-        stockpileInfosElt.append(tildeElt);
-        stockpileInfosElt.prepend(tildeElt2);
+        tildeElt2.innerHTML += '\n';
+        stockpileInfosElt.prepend(tildeElt);
+        stockpileInfosElt.append(tildeElt2);
     } else {
         imgElt.setAttribute('alt', ':regional_indicator_a:');
         imgElt.src = './assets/capital_abcd.svg';
@@ -339,7 +347,7 @@ function addStockpileElt(cityElt, data = null) {
     createElement('span', stockpileContentElt, { innerText: data.code ?? "", contentEditable: "true", spellcheck: false });
     createElement('span', stockpileContentElt, { innerText: "・", classList: "separator" });
     createElement('span', stockpileContentElt, { innerText: data.creator ?? "", contentEditable: "true", spellcheck: false });
-    stockpileContentElt.innerHTML += '\n\n\n';
+    stockpileContentElt.innerHTML += '\n';
 
     const btnGroupElt = createElement('div', stockpileElt, { classList: "btn-group btn-group-sm ms-auto" });
     btnGroupElt.setAttribute('role', 'group');
@@ -354,6 +362,8 @@ function addStockpileElt(cityElt, data = null) {
     cityElt.insertBefore(stockpileElt, cityElt.children[cityElt.children.length - 1]);
 
     setStockpileImageAlt();
+    stockpileElt.innerHTML += '\n';
+    return stockpileElt;
 }
 
 // Add keyboard listener on "RETURN" key to prevent adding line break on span[contenteditable]
@@ -382,6 +392,125 @@ function setStockpileImageAlt() {
 setStockpileImageAlt();
 
 function parseTextareaContent() {
+    const textareaElt = document.querySelector("#textareaChannelContent");
+    if (textareaElt == null || textareaElt.value.trim() == "") {
+        textareaElt.classList.add('is-invalid');
+        setTimeout(() => {
+            textareaElt.classList.remove('is-invalid');
+        }, 1500);
+        console.log("Can't copy !");
+        return;
+    }
+    const channelContent = textareaElt.value;
+
+
+    let currentRegionElt, currentCityElt;
+    const rows = channelContent.split('\n');
+    rows.forEach(row => {
+        // ^(:)(\w{1,64})(:) Regex : line start with ':', follow by 1 to 64 alphanumeric char or underscore, followed by ':'
+        // Basically : Line start with an emoji ?
+        let emoji = row.match(/^(:)(\w{1,64})(:)/gi);
+        if (!emoji) { return; }
+        emoji = emoji[0];
+
+        // remove '*' if input is comming directly from 'Add stockpile' form
+        row = row.replaceAll("*", "");
+
+        if (emoji == ":new:") {
+            const rowParts = row.split("・");
+            if (rowParts.length != 6) {
+                console.log('Problem with this line : ', row);
+                return;
+            }
+            const stockpileData = {
+                emojiCode: rowParts[0],
+                regionName: rowParts[1].trim(),
+                cityName: rowParts[2].trim(),
+                name: rowParts[3].trim(),
+                code: rowParts[4].trim(),
+                creator: rowParts[5].trim()
+            }
+            const regionElt = getRegionEltOrCreateIt(stockpileData.regionName);
+            const cityElt = getCityEltOrCreateIt(regionElt, stockpileData.cityName);
+            addStockpileElt(cityElt, stockpileData);
+        } else if (emoji.endsWith('square:')) {
+            const regionName = row.replace(emoji, "").trim();
+            if (!regionName || (regionName && regionName.length <= 3)) {
+                console.log('Problem with this line : ', row);
+                return;
+            }
+            currentRegionElt = getRegionEltOrCreateIt(regionName);
+        } else if (emoji.endsWith('diamond:')) {
+            const cityName = row.replace(emoji, "").trim();
+            if (!cityName || (cityName && cityName.length <= 3)) {
+                console.log('Problem with this line : ', row);
+                return;
+            }
+            currentCityElt = getCityEltOrCreateIt(currentRegionElt ?? codeListElt, cityName);
+        } else if (emoji.startsWith(':regional') || emoji == ':x:') {
+            const rowParts = row.split("・");
+            if (rowParts.length != 4) {
+                console.log('Problem with this line : ', row);
+                return;
+            }
+            const stockpileData = {
+                emojiCode: rowParts[0],
+                name: rowParts[1],
+                code: rowParts[2],
+                creator: rowParts[3]
+            }
+            const stockpileElt = addStockpileElt(currentCityElt ?? codeListElt, stockpileData);
+            if (emoji == ':x:') {
+                strikeStockpile(stockpileElt);
+            }
+        }
+    });
+
+    textareaElt.value = "";
+}
+
+function createLocationNameElt(name, emoji, isRegion = false) {
+    const divNameElt = createElement('div');
+
+    const style = isRegion ? '**' : '*';
+    divNameElt.innerHTML = `<span class="visually-hidden">${style}</span>${name}<span class="visually-hidden">${style}</span>\n`;
+
+    const imgElt = createElement('img', null, { classList: 'emoji', draggable: false })
+    imgElt.setAttribute('alt', `${emoji}`);
+    imgElt.src = `./assets/${emoji.replaceAll(':', "")}.svg`;
+    divNameElt.prepend(imgElt);
+
+    return divNameElt;
+}
+
+function getRegionEltOrCreateIt(regionName) {
+    const regionId = 'region-' + transformNameInID(regionName);
+    let regionElt = document.getElementById(regionId);
+    if (regionElt != null) {
+        return regionElt;
+    }
+    regionElt = createElement('div', codeListElt, { classList: "region mb-3", id: regionId });
+    nameElt = createLocationNameElt(regionName, ":black_small_square:", true);
+    regionElt.append(nameElt);
+    createElement('br', codeListElt);
+    regionElt.innerHTML += '\n';
+    return regionElt;
+}
+
+function getCityEltOrCreateIt(regionElt, cityName) {
+    const cityId = 'city-' + transformNameInID(cityName);
+    let cityElt = document.getElementById(cityId);
+    if (cityElt != null) {
+        return cityElt;
+    }
+    cityElt = createElement('div', regionElt, { classList: "city", id: cityId });
+    cityElt.innerHTML = `<button class="btn btn-outline-success btn-sm mb-1" type="button" onclick="addStockpileElt(this.parentNode)"><i class="fa fa-plus"></i><span>New Stockpile </span></button>`;
+    nameElt = createLocationNameElt(cityName, ":small_blue_diamond:", false);
+    cityElt.prepend(nameElt);
+    cityElt.innerHTML += '\n';
+    return cityElt;
+
+}
 
 function fillTextareaWithDebugdata(){
     document.getElementById('textareaChannelContent').value = `[11eRC] Guismo ⊙⊜⊚ — 16/09/2021\n#Liste des codes - https://metylene.github.io/codes-reserves/\n\n:black_small_square: Reaching Trail\n:small_blue_diamond: Brodytown\n:x:・11eRC-FL・801050・Zeip\n:x:・11eRC-FL・801050・Zeip\n:x:・11eRC-FL・801050・Zeip\n:regional_indicator_b:・11eRC-FL 2・353618・Killa\n\n:black_small_square: Godcrofts\n\n:small_blue_diamond: The Axehead\n:regional_indicator_c:・11eRC-FL 1・166753・Ciselin\n\n:black_small_square: Viper Pit\n:small_blue_diamond: Kirknell\n:regional_indicator_d:・11eRC-FL 1・739921・Ciselin\n:x:・11eRC-FL 1・739921・Ciselin\n\n:black_small_square: Callahan's Passage\n:small_blue_diamond: Lochan\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n\n### Critical deadline before a new list is needed : 3 days ago - https://metylene.github.io/codes-reserves/\n[11eRC] SterlifngCroco — 17/09/2021\n:new:・Shackled Chasm・*Widow's Web・11eRC-FL ・811803・SterlingCroo\n[11eRC] Guismo ⊙⊜⊚ — 19/09/2021\n═══════════════════════════╣WAR 83 ╠`;
