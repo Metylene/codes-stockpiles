@@ -355,10 +355,10 @@ function addStockpileElt(cityElt, data = null) {
     btnGroupElt.setAttribute('role', 'group');
     const strikeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-warning", type: "button" });
     strikeElt.setAttribute('onclick', 'strikeStockpile(this.parentNode.parentNode)');
-    strikeElt.innerHTML = '\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-lg-inline"> Strike</span>\n';
+    strikeElt.innerHTML = '\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-sm-inline"> Strike</span>\n';
     const removeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-danger", type: "button" });
     removeElt.setAttribute('onclick', 'removeStockpile(this.parentNode.parentNode)');
-    removeElt.innerHTML = '\n<i class="fa fa-trash">\n</i>\n<span class="d-none d-lg-inline"> Remove</span>\n';
+    removeElt.innerHTML = '\n<i class="fa fa-trash">\n</i>\n<span class="d-none d-sm-inline"> Remove</span>\n';
 
 
     cityElt.insertBefore(stockpileElt, cityElt.children[cityElt.children.length - 1]);
