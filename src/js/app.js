@@ -488,6 +488,8 @@ function parseTextareaContent() {
             const cityName = currentCityElt.firstChild.innerText.replaceAll('\n', '').replaceAll('*', '');
             let deletedStockpile = `${regionName}・${cityName}・${row}`
             addRowToDeletedLines(deletedStockpile);
+        } else {
+            addRowToProblemsLines(row);
         }
     });
 
