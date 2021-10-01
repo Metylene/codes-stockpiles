@@ -1,8 +1,8 @@
 // let regionNameArray = ["TheFingersHex", "GreatMarchHex", "TempestIslandHex", "MarbanHollow", "ViperPitHex", "BasinSionnachHex", "DeadLandsHex", "HeartlandsHex", "EndlessShoreHex", "WestgateHex", "OarbreakerHex", "AcrithiaHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex", "MorgensCrossingHex", "StonecradleHex", "AllodsBightHex", "KalokaiHex", "RedRiverHex", "OriginHex", "HowlCountyHex", "ShackledChasmHex", "SpeakingWoodsHex", "TerminusHex", "LinnMercyHex", "ClansheadValleyHex", "GodcroftsHex", "NevishLineHex", "CallumsCapeHex", "FishermansRowHex", "UmbralWildwoodHex", "ReachingTrailHex", "CallahansPassageHex", "AshFieldsHex", "DrownedValeHex", "FarranacCoastHex"];
 // let regionNameArray = [ "StonecradleHex", "AllodsBightHex", "TempestIslandHex", "GreatMarchHex", "MarbanHollow", "ViperPitHex", "ShackledChasmHex", "HeartlandsHex", "DeadLandsHex", "LinnMercyHex", "EndlessShoreHex", "GodcroftsHex", "FishermansRowHex", "WestgateHex", "ReachingTrailHex", "UmbralWildwoodHex", "OarbreakerHex", "CallahansPassageHex", "DrownedValeHex", "FarranacCoastHex", "MooringCountyHex", "WeatheredExpanseHex", "LochMorHex" ];
 let storageItemsByRegion = []; // data from api/regionName/dynamic/public + property cityName with closest Major maptextItems
-const emojiStockpileArray = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿', '❌'];
-const emojiArray = emojiStockpileArray.concat(['◼️', '🔹', '🆕']);
+const emojiStockpileArray = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
+const emojiArray = emojiStockpileArray.concat(['◼️', '🔹', '🆕', '❌']);
 
 const codeListElt = document.querySelector('#codeList');
 
@@ -409,7 +409,6 @@ function parseTextareaContent() {
         setTimeout(() => {
             textareaElt.classList.remove('is-invalid');
         }, 1500);
-        console.log("Can't copy !");
         return;
     }
     const channelContent = textareaElt.value;
@@ -422,8 +421,10 @@ function parseTextareaContent() {
         row = row.replaceAll("*", "");
         row = row.replaceAll("~", "");
 
-        if (!isStartingWithEmoji(row)) {
-            console.log('not starting with emoji');
+        if (!isStartingWithEmoji(row)) {    
+            if((row.match(/・/g) || []).length > 0){
+                addRowToProblemsLines(row);
+            }
             return;
         }
         let emoji = row.match(/^(:)(\w{1,64})(:)/gi);
@@ -436,7 +437,7 @@ function parseTextareaContent() {
         if (emoji == ":new:" || emoji == '🆕') {
             const rowParts = row.split("・");
             if (rowParts.length != 6) {
-                console.log('Problem with this line : ', row);
+                addRowToProblemsLines(row);
                 return;
             }
             const stockpileData = {
@@ -453,21 +454,21 @@ function parseTextareaContent() {
         } else if (emoji.endsWith('square:') || emoji == '◼️') {
             const regionName = row.replace(emoji, "").trim();
             if (!regionName || (regionName && regionName.length <= 3)) {
-                console.log('Problem with this line : ', row);
+                addRowToProblemsLines(row);
                 return;
             }
             currentRegionElt = getRegionEltOrCreateIt(regionName);
         } else if (emoji.endsWith('diamond:') || emoji == '🔹') {
             const cityName = row.replace(emoji, "").trim();
             if (!cityName || (cityName && cityName.length <= 3)) {
-                console.log('Problem with this line : ', row);
+                addRowToProblemsLines(row);
                 return;
             }
             currentCityElt = getCityEltOrCreateIt(currentRegionElt ?? codeListElt, cityName);
-        } else if (emoji.startsWith(':regional') || emoji == ':x:' || emojiStockpileArray.includes(emoji)) {
+        } else if (emoji.startsWith(':regional') || emojiStockpileArray.includes(emoji)) {
             const rowParts = row.split("・");
             if (rowParts.length != 4) {
-                console.log('Problem with this line : ', row);
+                addRowToProblemsLines(row);
                 return;
             }
             const stockpileData = {
@@ -477,9 +478,16 @@ function parseTextareaContent() {
                 creator: rowParts[3]
             }
             const stockpileElt = addStockpileElt(currentCityElt ?? codeListElt, stockpileData);
-            if (emoji == ':x:' || emoji == '❌') {
-                strikeStockpile(stockpileElt);
+        } else if (emoji == ':x:' || emoji == '❌') {
+            const rowParts = row.split("・");
+            if (rowParts.length != 4) {
+                addRowToProblemsLines(row);
+                return;
             }
+            const regionName = currentRegionElt.firstChild.innerText.replaceAll('\n', '').replaceAll('**', '');
+            const cityName = currentCityElt.firstChild.innerText.replaceAll('\n', '').replaceAll('*', '');
+            let deletedStockpile = `${regionName}・${cityName}・${row}`
+            addRowToDeletedLines(deletedStockpile);
         }
     });
 
@@ -529,6 +537,18 @@ function getCityEltOrCreateIt(regionElt, cityName) {
 
 }
 
+function addRowToProblemsLines(row) {
+    const problemsLinesElt = document.getElementById('problems-lines');
+    problemsLinesElt.parentNode.classList.remove('d-none');
+    createElement('div', problemsLinesElt, { innerText: row})
+}
+
+function addRowToDeletedLines(row) {
+    const deletedLinesElt = document.getElementById('deleted-lines');
+    deletedLinesElt.parentNode.classList.remove('d-none');
+    createElement('div', deletedLinesElt, { innerText: row})
+}
+
 function fillTextareaWithDebugdata() {
-    document.getElementById('textareaChannelContent').value = `[11eRC] Guismo ⊙⊜⊚ — 16/09/2021\n#Liste des codes - https://metylene.github.io/codes-reserves/\n\n:black_small_square: Reaching Trail\n:small_blue_diamond: Brodytown\n:x:・11eRC-FL・801050・Zeip\n:x:・11eRC-FL・801050・Zeip\n:x:・11eRC-FL・801050・Zeip\n:regional_indicator_b:・11eRC-FL 2・353618・Killa\n\n:black_small_square: Godcrofts\n\n:small_blue_diamond: The Axehead\n:regional_indicator_c:・11eRC-FL 1・166753・Ciselin\n\n:black_small_square: Viper Pit\n:small_blue_diamond: Kirknell\n:regional_indicator_d:・11eRC-FL 1・739921・Ciselin\n:x:・11eRC-FL 1・739921・Ciselin\n\n:black_small_square: Callahan's Passage\n:small_blue_diamond: Lochan\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n\n### Critical deadline before a new list is needed : 3 days ago - https://metylene.github.io/codes-reserves/\n[11eRC] SterlifngCroco — 17/09/2021\n:new:・Shackled Chasm・*Widow's Web・11eRC-FL ・811803・SterlingCroo\n[11eRC] Guismo ⊙⊜⊚ — 19/09/2021\n═══════════════════════════╣WAR 83 ╠`;
+    document.getElementById('textareaChannelContent').value = `[11eRC] Guismo ⊙⊜⊚ — 16/09/2021\n#Liste des codes - https://metylene.github.io/codes-reserves/\n\n:black_small_square: Reaching Trail\n:small_blue_diamond: Brodytown\n:x:11eRC-FL・801050・Zeip\n・11eRC-FL・801050・Zeip\n:x:・・11eRC-FL・801050・Zeip\n:regional_indicator_b:・11eRC-FL 2・353618・Killa\n\n:black_small_square: Godcrofts\n\n:small_blue_diamond: The Axehead\n:regional_indicator_c:・11eRC-FL 1・166753・Ciselin\n\n:black_small_square: Viper Pit\n:small_blue_diamond: Kirknell\n:regional_indicator_d:・11eRC-FL 1・739921・Ciselin\n:x:・11eRC-FL 1・739921・Ciselin\n\n:black_small_square: Callahan's Passage\n:small_blue_diamond: Lochan\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n:x:・11eRC-FL 1・250771・Sir Madijeis\n\n### Critical deadline before a new list is needed : 3 days ago - https://metylene.github.io/codes-reserves/\n[11eRC] SterlifngCroco — 17/09/2021\n:new:・Shackled Chasm・*Widow's Web・11eRC-FL ・811803・SterlingCroo\n[11eRC] Guismo ⊙⊜⊚ — 19/09/2021\n═══════════════════════════╣WAR 83 ╠`;
 }

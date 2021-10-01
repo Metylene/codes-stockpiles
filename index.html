@@ -561,6 +561,23 @@
                                 onclick="parseTextareaContent();">Add to the list</button>
                         </div>
                     </div>
+                    <div class="mb-3 border border-danger rounded d-none">
+                        <div class="col-12 bg-danger p-1">
+                            <h5>Lines with problems</h5>
+                            <div>This lines have not been added to the list. Add them if necessary.</div>
+                        </div>
+                        <div id="problems-lines" class="col-12 p-1">
+                        </div>
+                    </div>
+                    <div class="mb-3 border border-warning rounded d-none">
+                        <div class="col-12 bg-warning p-1">
+                            <h5>Stockpiles removed</h5>
+                            <div>Because they started with <img src="./assets/x.svg" alt=":x:" draggable="false"
+                                    class="emoji">, this stockpiles have not been added.</div>
+                        </div>
+                        <div id="deleted-lines" class="col-12 p-1">
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <div class="col-12">
                             <button class="btn btn-secondary" type="button"
