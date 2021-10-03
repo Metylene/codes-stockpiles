@@ -344,10 +344,6 @@ function removeStockpile(stockpileElt) {
     setStockpileImageAlt();
 }
 
-function checkStockpile(stockpileElt) {
-
-}
-
 // data : { name : "string", code : "string", creator : "string"}
 function addStockpileElt(cityElt, data = null) {
     if (!data) { data = {} }
@@ -365,8 +361,7 @@ function addStockpileElt(cityElt, data = null) {
     const btnGroupElt = createElement('div', stockpileElt, { classList: "btn-group btn-group-sm ms-auto" });
     btnGroupElt.setAttribute('role', 'group');
     const checkboxId = `checkbox-stockpile-${randomIdGenerator()}`;
-    const checkboxElt = createElement('input', btnGroupElt, { classList: "btn-check", type: "checkbox", id: checkboxId });
-    checkboxElt.setAttribute('onclick', 'checkStockpile(this)');
+    createElement('input', btnGroupElt, { classList: "btn-check", type: "checkbox", id: checkboxId });
     const labelCheckboxElt = createElement('label', btnGroupElt, { classList: "btn btn-outline-success", htmlFor: checkboxId });
     labelCheckboxElt.innerHTML = '\n<i class="fa fa-check"></i>\n';
     const strikeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-warning", type: "button" });
