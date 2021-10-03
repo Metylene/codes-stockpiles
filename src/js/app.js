@@ -505,6 +505,7 @@ function parseTextareaContent() {
     });
 
     textareaElt.value = "";
+    document.querySelector('#bottomCodeList').classList.remove('d-none');
 }
 
 function createLocationNameElt(name, emoji, isRegion = false) {

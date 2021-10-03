@@ -586,14 +586,20 @@
                     </div>
                 </div>
             </div>
-            <div id="codeList" class="col-xl-6 bg-secondary rounded">
-                <div class="w-100 d-flex mt-3">
-                    <h3>#<span class="visually-hidden">**</span>Liste des codes<span class="visually-hidden">** -
-                            https://metylene.github.io/codes-stockpiles/</span></h3>
-                    <input class="btn btn-primary btn-lg ms-auto my-2" type="button" onclick="copyListToClipboard(this)"
+            <div class="col-xl-6 bg-secondary rounded">
+                <div id="codeList">
+                    <div class="w-100 d-flex mt-3">
+                        <h3>#<span class="visually-hidden">**</span>Liste des codes<span class="visually-hidden">** -
+                                https://metylene.github.io/codes-stockpiles/</span></h3>
+                        <input class="btn btn-primary btn-lg ms-auto my-2" type="button"
+                            onclick="copyListToClipboard(this)" value="Copy to clipboard 📋"></input>
+                    </div>
+                    <br>
+                </div>
+                <div id="bottomCodeList" class="d-none">
+                    <input class="btn btn-primary btn-lg w-100 my-2" type="button" onclick="copyListToClipboard(this)"
                         value="Copy to clipboard 📋"></input>
                 </div>
-                <br>
             </div>
         </div>
     </div>
