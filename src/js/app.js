@@ -36,6 +36,13 @@ function DistSquared(pt1, pt2) {
 function transformNameInID(locationName) {
     return locationName.toLowerCase().replaceAll("'", "").replaceAll(" ", "").trim();
 }
+// https://stackoverflow.com/questions/6860853/generate-random-string-for-div-id/6860916#6860916
+function randomIdGenerator() {
+    let S4 = function() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4());
+}
 
 async function loadStorageItems(regionName) {
     storageItemsByRegion[regionName] = [];
@@ -337,6 +344,10 @@ function removeStockpile(stockpileElt) {
     setStockpileImageAlt();
 }
 
+function checkStockpile(stockpileElt) {
+
+}
+
 // data : { name : "string", code : "string", creator : "string"}
 function addStockpileElt(cityElt, data = null) {
     if (!data) { data = {} }
@@ -353,12 +364,17 @@ function addStockpileElt(cityElt, data = null) {
 
     const btnGroupElt = createElement('div', stockpileElt, { classList: "btn-group btn-group-sm ms-auto" });
     btnGroupElt.setAttribute('role', 'group');
+    const checkboxId = `checkbox-stockpile-${randomIdGenerator()}`;
+    const checkboxElt = createElement('input', btnGroupElt, { classList: "btn-check", type: "checkbox", id: checkboxId });
+    checkboxElt.setAttribute('onclick', 'checkStockpile(this)');
+    const labelCheckboxElt = createElement('label', btnGroupElt, { classList: "btn btn-outline-success", htmlFor: checkboxId });
+    labelCheckboxElt.innerHTML = '\n<i class="fa fa-check"></i>\n';
     const strikeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-warning", type: "button" });
     strikeElt.setAttribute('onclick', 'strikeStockpile(this.parentNode.parentNode)');
-    strikeElt.innerHTML = '\n<i class="fa fa-strikethrough">\n</i>\n<span class="d-none d-sm-inline"> Strike</span>\n';
+    strikeElt.innerHTML = '\n<i class="fa fa-strikethrough"></i>\n<span class="d-none d-sm-inline"> Strike</span>\n';
     const removeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-danger", type: "button" });
     removeElt.setAttribute('onclick', 'removeStockpile(this.parentNode.parentNode)');
-    removeElt.innerHTML = '\n<i class="fa fa-trash">\n</i>\n<span class="d-none d-sm-inline"> Remove</span>\n';
+    removeElt.innerHTML = '\n<i class="fa fa-trash"></i>\n<span class="d-none d-sm-inline"> Remove</span>\n';
 
 
     cityElt.insertBefore(stockpileElt, cityElt.children[cityElt.children.length - 1]);
@@ -421,9 +437,9 @@ function parseTextareaContent() {
         row = row.replaceAll("*", "");
         row = row.replaceAll("~", "");
 
-        if (!isStartingWithEmoji(row)) {    
-            if((row.match(/・/g) || []).length > 0){
-                addRowToProblemsLines(row);
+        if (!isStartingWithEmoji(row)) {
+            if ((row.match(/・/g) || []).length > 0) {
+                addRowToProblemsLinesElt(row);
             }
             return;
         }
@@ -437,7 +453,7 @@ function parseTextareaContent() {
         if (emoji == ":new:" || emoji == '🆕') {
             const rowParts = row.split("・");
             if (rowParts.length != 6) {
-                addRowToProblemsLines(row);
+                addRowToProblemsLinesElt(row);
                 return;
             }
             const stockpileData = {
@@ -454,21 +470,21 @@ function parseTextareaContent() {
         } else if (emoji.endsWith('square:') || emoji == '◼️') {
             const regionName = row.replace(emoji, "").trim();
             if (!regionName || (regionName && regionName.length <= 3)) {
-                addRowToProblemsLines(row);
+                addRowToProblemsLinesElt(row);
                 return;
             }
             currentRegionElt = getRegionEltOrCreateIt(regionName);
         } else if (emoji.endsWith('diamond:') || emoji == '🔹') {
             const cityName = row.replace(emoji, "").trim();
             if (!cityName || (cityName && cityName.length <= 3)) {
-                addRowToProblemsLines(row);
+                addRowToProblemsLinesElt(row);
                 return;
             }
             currentCityElt = getCityEltOrCreateIt(currentRegionElt ?? codeListElt, cityName);
         } else if (emoji.startsWith(':regional') || emojiStockpileArray.includes(emoji)) {
             const rowParts = row.split("・");
             if (rowParts.length != 4) {
-                addRowToProblemsLines(row);
+                addRowToProblemsLinesElt(row);
                 return;
             }
             const stockpileData = {
@@ -481,15 +497,15 @@ function parseTextareaContent() {
         } else if (emoji == ':x:' || emoji == '❌') {
             const rowParts = row.split("・");
             if (rowParts.length != 4) {
-                addRowToProblemsLines(row);
+                addRowToProblemsLinesElt(row);
                 return;
             }
-            const regionName = currentRegionElt.firstChild.innerText.replaceAll('\n', '').replaceAll('**', '');
-            const cityName = currentCityElt.firstChild.innerText.replaceAll('\n', '').replaceAll('*', '');
+            const regionName = currentRegionElt?.firstChild?.innerText.replaceAll('\n', '').replaceAll('**', '') || "Region";
+            const cityName = currentCityElt?.firstChild?.innerText.replaceAll('\n', '').replaceAll('*', '') || "City";
             let deletedStockpile = `${regionName}・${cityName}・${row}`
-            addRowToDeletedLines(deletedStockpile);
+            addRowToDeletedLinesElt(deletedStockpile);
         } else {
-            addRowToProblemsLines(row);
+            addRowToProblemsLinesElt(row);
         }
     });
 
@@ -497,15 +513,16 @@ function parseTextareaContent() {
 }
 
 function createLocationNameElt(name, emoji, isRegion = false) {
-    const divNameElt = createElement('div', null, { classList: "name" });
-
+    const divNameElt = createElement('div', null, { classList: "name d-flex align-items-end" });
     const style = isRegion ? '**' : '*';
-    divNameElt.innerHTML = `<span class="visually-hidden">${style}</span>${name}<span class="visually-hidden">${style}</span>\n`;
+
+    const divNameContentElt = createElement('div', divNameElt, { classList: "nameContent" });
+    divNameContentElt.innerHTML = `<span class="visually-hidden">${style}</span>${name}<span class="visually-hidden">${style}</span>\n`;
 
     const imgElt = createElement('img', null, { classList: 'emoji', draggable: false })
     imgElt.setAttribute('alt', `${emoji}`);
     imgElt.src = `./assets/${emoji.replaceAll(':', "")}.svg`;
-    divNameElt.prepend(imgElt);
+    divNameContentElt.prepend(imgElt);
 
     return divNameElt;
 }
@@ -532,23 +549,42 @@ function getCityEltOrCreateIt(regionElt, cityName) {
     }
     cityElt = createElement('div', regionElt, { classList: "city", id: cityId });
     cityElt.innerHTML = `<button class="btn btn-outline-success btn-sm mb-1" type="button" onclick="addStockpileElt(this.parentNode)"><i class="fa fa-plus"></i><span> New Stockpile </span></button>`;
+
     nameElt = createLocationNameElt(cityName, ":small_blue_diamond:", false);
+
+    const btnGroupElt = createElement('div', nameElt, { classList: "btn-group btn-group-sm ms-auto" });
+    btnGroupElt.setAttribute('role', 'group');
+    const removeElt = createElement('button', btnGroupElt, { classList: "btn btn-outline-danger", type: "button" });
+    removeElt.setAttribute('onclick', 'removeCity(this.closest(".city"))');
+    removeElt.innerHTML = '\n<i class="fa fa-trash"></i>\n<span class="d-none d-sm-inline"> Remove City</span>\n';
+
     cityElt.prepend(nameElt);
     cityElt.innerHTML += '\n';
     return cityElt;
 
 }
 
-function addRowToProblemsLines(row) {
-    const problemsLinesElt = document.getElementById('problems-lines');
-    problemsLinesElt.parentNode.classList.remove('d-none');
-    createElement('div', problemsLinesElt, { innerText: row})
+function removeCity(cityElt){
+    const regionElt = cityElt.closest('.region');
+    cityElt.parentNode.removeChild(cityElt);
+    if(regionElt && regionElt.children.length <= 1){
+        regionElt.parentNode.removeChild(regionElt.nextSibling);
+        regionElt.parentNode.removeChild(regionElt);
+    }
+
+    setStockpileImageAlt();
 }
 
-function addRowToDeletedLines(row) {
+function addRowToProblemsLinesElt(row) {
+    const problemsLinesElt = document.getElementById('problems-lines');
+    problemsLinesElt.parentNode.classList.remove('d-none');
+    createElement('div', problemsLinesElt, { innerText: row })
+}
+
+function addRowToDeletedLinesElt(row) {
     const deletedLinesElt = document.getElementById('deleted-lines');
     deletedLinesElt.parentNode.classList.remove('d-none');
-    createElement('div', deletedLinesElt, { innerText: row})
+    createElement('div', deletedLinesElt, { innerText: row })
 }
 
 function fillTextareaWithDebugdata() {
