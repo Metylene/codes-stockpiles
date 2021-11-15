@@ -478,10 +478,11 @@ function parseTextareaContent() {
             currentCityElt = getCityEltOrCreateIt(currentRegionElt ?? codeListElt, cityName);
         } else if (emoji.startsWith(':regional') || emojiStockpileArray.includes(emoji)) {
             const rowParts = row.split("・");
-            if (rowParts.length != 4) {
+            if (rowParts.length < 4 || rowParts.length > 5) {
                 addRowToProblemsLinesElt(row);
                 return;
             }
+            if(rowParts.length === 5){ rowParts.splice(1, 1); } // remove timestamp
             const stockpileData = {
                 emojiCode: rowParts[0],
                 name: rowParts[1],
